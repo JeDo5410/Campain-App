@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"="width=device-width, initial-scale=1.0">
+    <title>Sales Campaign Form</title>
+    <style>
+        :root {
+            --primary: #892062;
+            --primary-light: #a8407e;
+            --primary-dark: #6a174b;
+            --light: #f9f4f7;
+            --gray: #f0f0f0;
+            --dark: #333;
+            --border: #e6e6e6;
+            --text: #404040;
+            --spacing-xs: 8px;
+            --spacing-sm: 12px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 8px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(to bottom, var(--primary-dark), var(--primary));
+            color: white;
+            padding: var(--spacing-lg) 0;
+            overflow-y: auto;
+            transition: all 0.3s;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .sidebar.collapsed {
+            left: -250px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center; /* vertically center the items */
+            gap: 10px; /* optional: space between the button and title */
+        }
+
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            padding: 0 var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .brand-logo {
+            height: 40px;
+            width: 40px;
+            background-color: rgb(255, 255, 255);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: var(--spacing-md);
+        }
+        
+        .brand-name {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .nav-section {
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .nav-section-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 0 var(--spacing-lg);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-md) var(--spacing-lg);
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-item i {
+            margin-right: var(--spacing-md);
+            font-size: 18px;
+        }
+        
+        .nav-icon {
+            width: 20px;
+            margin-right: var(--spacing-md);
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: var(--spacing-lg);
+            margin-left: 250px;
+            transition: all 0.3s;
+        }
+        
+        .main-content.expanded {
+            margin-left: 0;
+        }
+        
+        /* Top header */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .toggle-sidebar {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .toggle-sidebar:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .page-title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+        
+        .notifications {
+            position: relative;
+            margin-right: var(--spacing-lg);
+            cursor: pointer;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--red);
+            color: white;
+            font-size: 10px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-right: var(--spacing-sm);
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 var(--spacing-lg);
+        }
+        
+        .card {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+        
+        .form-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: var(--spacing-xl);
+            position: relative;
+        }
+        
+        .form-header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .form-header p {
+            margin-top: var(--spacing-md);
+            opacity: 0.9;
+            font-size: 16px;
+            max-width: 80%;
+        }
+        
+        .form-header::after {
+            content: "";
+            position: absolute;
+            bottom: -20px;
+            right: 40px;
+            width: 120px;
+            height: 120px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        .form-content {
+            padding: var(--spacing-xl);
+        }
+        
+        .form-section {
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-xl);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .section-number {
+            background-color: var(--primary);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: var(--spacing-md);
+            flex-shrink: 0;
+        }
+        
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--spacing-lg);
+        }
+        
+        .span-12, .span-6 {
+            grid-column: span 1;
+        }
+        
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 15px;
+        }
+        
+        .required label::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: var(--spacing-md);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            transition: all 0.3s;
+            color: var(--dark);
+            background-color: white;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(137, 32, 98, 0.15);
+        }
+        
+        input[type="date"] {
+            padding: 14px var(--spacing-md);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-sm);
+            justify-content: center; /* center items horizontally */
+        }
+
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            background-color: var(--light);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .checkbox-item:hover {
+            background-color: #f0e6ec;
+        }
+        
+        .checkbox-item input {
+            width: auto;
+            margin-right: var(--spacing-sm);
+            cursor: pointer;
+        }
+        
+        .checkbox-item.selected {
+            background-color: rgba(137, 32, 98, 0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .select-wrapper {
+            position: relative;
+        }
+        
+        .select-wrapper::after {
+            content: "▼";
+            position: absolute;
+            right: var(--spacing-md);
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 12px;
+            pointer-events: none;
+        }
+        
+        select {
+            appearance: none;
+            padding-right: 30px;
+            cursor: pointer;
+        }
+        
+        .search-select {
+            position: relative;
+        }
+        
+        .search-select input {
+            padding-right: 40px;
+        }
+        
+        .search-select::after {
+            content: "🔍";
+            position: absolute;
+            right: var(--spacing-md);
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 16px;
+            pointer-events: none;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-md) var(--spacing-xl);
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            border: none;
+            min-width: 150px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            filter: brightness(1.1);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--light);
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--border);
+            gap: var(--spacing-md);
+        }
+        
+        .help-text {
+            font-size: 13px;
+            color: #666;
+            margin-top: var(--spacing-xs);
+        }
+        
+        .code-format {
+            font-family: monospace;
+            background-color: var(--light);
+            padding: 2px 6px;
+            font-size: 13px;
+            border-radius: var(--radius-sm);
+            color: var(--primary);
+        }
+        
+        .loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary) 0%, var(--primary-light) 50%, var(--primary) 100%);
+            background-size: 200% 100%;
+            animation: loading 2s infinite;
+            z-index: 1000;
+        }
+
+        .input-with-symbol {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+            color: #555;
+            font-weight: bold;
+        }
+
+        #proposedMarketingBudget, #actualMarketingBudget {
+            padding-left: 25px; /* Make space for the dollar sign */
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 var(--spacing-md);
+                margin: 20px auto;
+            }
+            
+            .form-grid {
+                gap: var(--spacing-md);
+            }
+            
+            .span-6 {
+                grid-column: span 12;
+            }
+            
+            .form-content {
+                padding: var(--spacing-lg);
+            }
+            
+            .form-header {
+                padding: var(--spacing-lg);
+            }
+            
+            .form-section {
+                margin-bottom: var(--spacing-lg);
+                padding-bottom: var(--spacing-lg);
+            }
+            
+            .section-header {
+                margin-bottom: var(--spacing-lg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar collapsed" id="sidebar">
+        <div class="brand">
+            <div class="brand-logo"><img src='02 EduCLaaS Logo-Raspberry.png'  style='width: 100%; height: auto; max-width: 100%'/></div>
+            <div class="brand-name">Sales Campaigns</div>
+        </div>
+        
+        <div class="nav-section">
+            <a href="Dashboard.html" class="nav-item active">
+                <div class="nav-icon">📊</div>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon">📋</div>
+                <span>Campaigns List</span>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon">⚙️</div>
+                Master Data
+            </a>
+        </div>
+    </div>
+        <!-- <div class="nav-section">
+            <div class="nav-section-title">Reports</div>
+            <a href="#" class="nav-item">
+                <div class="nav-icon">📈</div>
+                Performance
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon">💹</div>
+                Analytics
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon">🗂️</div>
+                Export Data
+            </a>
+        </div> -->
+<!--             
+        <div class="nav-section">
+            <div class="nav-section-title">Settings</div>
+            <a href="#" class="nav-item">
+                <div class="nav-icon">👤</div>
+                Account
+            </a>
+            
+            <a href="#" class="nav-item">
+                <div class="nav-icon">🔒</div>
+                Security
+            </a>
+        </div>
+    </div> -->
+    
+    <!-- Main Content -->
+    <div class="main-content expanded" id="mainContent">
+        <div class="top-header">
+            <div class="header-left">
+                <button class="toggle-sidebar" id="toggleSidebar">
+                    ☰
+                </button>
+                <h1 class="page-title"> Create Campaign Event</h1>
+            </div>
+            
+            <div class="user-profile">
+                <div class="notifications">
+                    <span>🔔</span>
+                    <div class="notification-badge">3</div>
+                </div>
+                <div class="user-avatar">JD</div>
+                <div class="user-info">
+                    <div class="user-name">John Doe</div>
+                </div>
+            </div>
+        </div>
+    <div class="loading-bar"></div>
+    <div class="container">
+        <form id="campaignForm" class="card">
+            <div class="form-header">
+                <h1>Sales Campaign Form</h1>
+                <p>Complete this form to register a new sales campaign for approval</p>
+            </div>
+            
+            <div class="form-content">
+                <!-- Campaign Identification -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <div class="section-number">1</div>
+                        <h2 class="section-title">Campaign Identification</h2>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="span-12">
+                            <div class="form-group required">
+                                <label for="eventName">Event Name</label>
+                                <input type="text" id="eventName" name="eventName" required placeholder="Enter the event name">
+                            </div>
+                        </div>
+                        
+                        <div class="span-12">
+                            <div class="form-group required">
+                                <label for="campaignDescription">Sales Campaign Description</label>
+                                <textarea id="campaignDescription" name="campaignDescription" required placeholder="Provide a detailed description of the sales campaign"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="span-12">
+                            <div class="form-group required" style="display: flex; gap: 20px;">
+                                <div style="flex: 1;">
+                                    <label for="country">Country</label>
+                                    <select id="country" name="country" required>
+                                        <option value="">Select a country</option>
+                                        <option value="MY">Malaysia</option>
+                                        <option value="SG">Singapore</option>
+                                        <option value="ID">Indonesia</option>
+                                        <option value="PH">Philippines</option>
+                                        <!-- Add other countries as needed -->
+                                    </select>
+                                </div>
+                                <div style="flex: 1;">
+                                    <label for="marketingCampaignCode">Marketing Campaign Code</label>
+                                    <select id="marketingCampaignCode" name="marketingCampaignCode" required>
+                                        <option value="">Select a marketing campaign code</option>
+                                        <!-- Marketing codes will be populated based on selected country -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="span-12">
+                            <div class="form-group required">
+                                <label for="salesCampaignCode">Sales Campaign Code</label>
+                                <input type="text" id="salesCampaignCode" name="salesCampaignCode" required placeholder="Format: [Channel]-[Date]-[Text]-[Country]-[Solution]">
+                                <div class="help-text">Example: <span class="code-format">SI-250101-Example-PH-WSD</span></div>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+                <!-- Campaign Classification -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <div class="section-number">2</div>
+                        <h2 class="section-title">Campaign Classification</h2>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="span-12">
+                            <div class="form-group required">
+                                <label for="solution">Solution</label>
+                                <div class="select-wrapper">
+                                    <select id="solution" name="solution" required>
+                                        <option value="">Select a solution</option>
+                                        <option value="lll">Lifelong Learning (LLL)</option>
+                                        <option value="wsd">Work-Study Degree (WSD)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="span-12">
+                            <div class="form-group required">
+                                <label>Channel</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="channel" value="DIGITAL"> DIGITAL
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="channel" value="OFFLINE"> OFFLINE
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="channel" value="DATABASE"> DATABASE
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="channel" value="AFFILIATES"> AFFILIATES
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Timeline -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <div class="section-number">3</div>
+                        <h2 class="section-title">Timeline</h2>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="span-12">
+                            <div class="form-group required">
+                                <label for="startDate">Start Date</label>
+                                <input type="date" id="startDate" name="startDate" required>
+                            </div>
+                        </div>
+                        
+                        <div class="span-12">
+                            <div class="form-group required">
+                                <label for="endDate">End Date</label>
+                                <input type="date" id="endDate" name="endDate" required>
+                            </div>
+                        </div>
+                        
+                        <div class="span-12">
+                            <div class="form-group">
+                                <label for="campaignDetails">Sales Campaign Details</label>
+                                <textarea id="campaignDetails" name="campaignDetails" placeholder="Include any additional details about the campaign timeline, milestones, or key dates"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Budget Information -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <div class="section-number">4</div>
+                        <h2 class="section-title">Budget Information</h2>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="span-12">
+                            <div class="form-group required" style="display: flex; gap: 20px;">
+                                <div style="flex: 1;">
+                                    <div class="form-group required">
+                                        <label for="proposedMarketingBudget">Marketing Budget</label>
+                                        <div class="input-with-symbol">
+                                            <span class="currency-symbol">$</span>
+                                            <input type="number" id="proposedMarketingBudget" name="proposedMarketingBudget" 
+                                                   placeholder="Enter proposed amount" min="0" step="0.01" required disabled>
+                                        </div>
+                                    </div>    
+                                </div>
+                                <div style="flex: 1;">
+                                    <div class="form-group required">
+                                        <label for="actualMarketingBudget">Actual Spent</label>
+                                        <div class="input-with-symbol">
+                                            <span class="currency-symbol">$</span>
+                                            <input type="number" id="actualMarketingBudget" name="actualMarketingBudget" 
+                                                   placeholder="Enter actual amount" min="0" step="0.01" required>
+                                        </div>
+                                    </div>    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                    
+                
+                <!-- Target Metrics -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <div class="section-number">5</div>
+                        <h2 class="section-title">Campaign Target Metrics</h2>
+                    </div>
+                    
+                    <div class="form-grid">
+
+                        <div class="span-12">
+                            <div class="form-group required" style="display: flex; gap: 20px;">
+                                <div style="flex: 1;">
+                                    <label for="contactTarget">CONTACT Target</label>
+                                    <input type="number" id="contactTarget" name="contactTarget" required placeholder="Enter number" min="0" disabled>
+                                </div>
+                                <div style="flex: 1;">
+                                    <label for="contactTarget">CONTACT Actual</label>
+                                    <input type="number" id="contactTarget" name="contactTarget" required placeholder="Enter number" min="0">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="span-12">
+                            <div class="form-group required" style="display: flex; gap: 20px;">
+                                <div style="flex: 1;">
+                                    <label for="INTERESTTarget">INTEREST Target</label>
+                                    <input type="number" id="INTERESTTarget" name="INTERESTTarget" required placeholder="Enter number" min="0" disabled>
+                                </div>
+                                <div style="flex: 1;">
+                                    <label for="INTERESTTarget">INTEREST Actual</label>
+                                    <input type="number" id="INTERESTTarget" name="INTERESTTarget" required placeholder="Enter number" min="0">
+                                </div>
+                            </div>
+                        </div>
+						
+                        
+                        <div class="span-12">
+                            <div class="form-group required" style="display: flex; gap: 20px;">
+                                <div style="flex: 1;">
+                                    <label for="LEADSTarget">LEADS Target</label>
+                                    <input type="number" id="LEADSTarget" name="LEADSTarget" required placeholder="Enter number" min="0" disabled>
+                                </div>
+                                <div style="flex: 1;">
+                                    <label for="LEADSTarget">LEADS Actual</label>
+                                    <input type="number" id="LEADSTarget" name="LEADSTarget" required placeholder="Enter number" min="0">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="span-12">
+                            <div class="form-group required" style="display: flex; gap: 20px;">
+                                <div style="flex: 1;">
+                                    <label for="OPPORTUNITYTarget">OPPORTUNITY Target</label>
+                                    <input type="number" id="OPPORTUNITYTarget" name="OPPORTUNITYTarget" required placeholder="Enter number" min="0" disabled>
+                                </div>
+                                <div style="flex: 1;">
+                                    <label for="OPPORTUNITYTarget">OPPORTUNITY Actual</label>
+                                    <input type="number" id="OPPORTUNITYTarget" name="OPPORTUNITYTarget" required placeholder="Enter number" min="0">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="span-12">
+                            <div class="form-group required" style="display: flex; gap: 20px;">
+                                <div style="flex: 1;">
+                                    <label for="SALESTarget">SALES Target</label>
+                                    <input type="number" id="SALESTarget" name="SALESTarget" required placeholder="Enter number" min="0" disabled>
+                                </div>
+                                <div style="flex: 1;">
+                                    <label for="SALESTarget">SALES Actual</label>
+                                    <input type="number" id="SALESTarget" name="SALESTarget" required placeholder="Enter number" min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <!-- Campaign Notes -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <div class="section-number">6</div>
+                            <h2 class="section-title">Notes</h2>
+                        </div>
+                            
+                            <div class="span-12">
+                                <div class="form-group">
+                                    <label for="campaignDescription">Other Details</label>
+                                    <textarea id="campaignDescription" name="campaignDescription" placeholder="Enter notes here."></textarea>
+                                </div>
+                            </div>
+                    
+                <!-- </div> -->
+                
+                <!-- Additional Information -->
+                <!-- <div class="form-section">
+                    <div class="section-header">
+                        <div class="section-number">6</div>
+                        <h2 class="section-title">Additional Information</h2>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="span-12">
+                            <div class="form-group required">
+                                <label for="targetPersona">Target Persona</label>
+                                <div class="select-wrapper">
+                                    <select id="targetPersona" name="targetPersona" required>
+                                        <option value="">Select target persona</option>
+                                        <option value="ceo">CEO/Executive</option>
+                                        <option value="cto">CTO/Technical Decision Maker</option>
+                                        <option value="cfo">CFO/Financial Decision Maker</option>
+                                        <option value="marketing">Marketing Director</option>
+                                        <option value="operations">Operations Manager</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="span-12">
+                            <div class="form-group required">
+                                <label for="country">Country/Region</label>
+                                <div class="select-wrapper">
+                                    <select id="country" name="country" required>
+                                        <option value="">Select country/region</option>
+                                        <option value="us">United States</option>
+                                        <option value="ca">Canada</option>
+                                        <option value="eu">Europe</option>
+                                        <option value="uk">United Kingdom</option>
+                                        <option value="apac">Asia Pacific</option>
+                                        <option value="latam">Latin America</option>
+                                        <option value="global">Global</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="span-12">
+                            <div class="form-group required">
+                                <label for="objective">Objective</label>
+                                <textarea id="objective" name="objective" required placeholder="Describe the primary objectives of this campaign"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 -->
+                <div class="form-footer">
+                    <button type="button" class="btn btn-outline">Save Draft</button>
+                    <button type="submit" class="btn btn-primary">Submit Campaign</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Add basic interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+    // Channel checkbox styling with single selection
+    const checkboxItems = document.querySelectorAll('.checkbox-item');
+    checkboxItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            const checkbox = this.querySelector('input[type="checkbox"]');
+            
+            // If clicking anywhere but directly on the checkbox
+            if (e.target !== checkbox) {
+                checkbox.checked = !checkbox.checked;
+            }
+            
+            // If this checkbox is now checked, uncheck all others
+            if (checkbox.checked) {
+                checkboxItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        const otherCheckbox = otherItem.querySelector('input[type="checkbox"]');
+                        otherCheckbox.checked = false;
+                        otherItem.classList.remove('selected');
+                    }
+                });
+            }
+            
+            // Update the selected class for this item
+            this.classList.toggle('selected', checkbox.checked);
+        });
+    });
+
+            
+            // Form submission (prevent default for demo)
+            document.getElementById('campaignForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Basic validation
+                let valid = true;
+                const requiredFields = this.querySelectorAll('[required]');
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        field.style.borderColor = '#e74c3c';
+                        valid = false;
+                    } else {
+                        field.style.borderColor = '';
+                    }
+                });
+                
+                if (valid) {
+                    alert('Form submitted successfully! (This is just a demo)');
+                } else {
+                    alert('Please fill in all required fields.');
+                }
+            });
+            
+            // Date validation
+            const startDate = document.getElementById('startDate');
+            const endDate = document.getElementById('endDate');
+            
+            endDate.addEventListener('change', function() {
+                if(startDate.value && this.value && new Date(this.value) < new Date(startDate.value)) {
+                    alert('End date cannot be before start date');
+                    this.value = '';
+                }
+            });
+            
+            // Code format validation
+            const salesCodeInput = document.getElementById('salesCampaignCode');
+salesCodeInput.addEventListener('blur', function() {
+    const regex = /^[A-Z]{2}-\d{6}-[a-zA-Z]+-[A-Z]{2}-[A-Z]{3}$/;
+    if(this.value && !regex.test(this.value)) {
+        alert('Please follow the correct format: AA-000000-text-AA-AAA\nExample: SI-250101-Example-PH-WSD');
+        this.style.borderColor = '#e74c3c';
+    } else if(this.value) {
+        this.style.borderColor = '#4caf50';
+    }
+});
+        });
+    </script>
+    <script>
+    const countryDropdown = document.getElementById('country');
+    const marketingCampaignDropdown = document.getElementById('marketingCampaignCode');
+
+    const marketingCodesByCountry = {
+        "MY": ["HEDMYLLL2504", "HEDMYLLL2505", "HEDMYLLL2506"],
+        "SG": ["HEDSGLLL3101", "HEDSGLLL3102"],
+        "ID": ["HEDIDLLL3201", "HEDIDLLL3202"],
+        "PH": ["HEDPHLLL3301", "HEDPHLLL3302"]
+        // Add more country codes and marketing codes as needed
+    };
+
+    // Function to update the marketing codes based on selected country
+    countryDropdown.addEventListener('change', function() {
+        const selectedCountry = countryDropdown.value;
+
+        // Clear the existing options in the marketing code dropdown
+        marketingCampaignDropdown.innerHTML = '<option value="">Select a marketing campaign code</option>';
+
+        // Populate the marketing code dropdown based on selected country
+        if (selectedCountry && marketingCodesByCountry[selectedCountry]) {
+            marketingCodesByCountry[selectedCountry].forEach(function(code) {
+                const option = document.createElement('option');
+                option.value = code;
+                option.textContent = code;
+                marketingCampaignDropdown.appendChild(option);
+            });
+        }
+    });
+</script>
+<script>
+    const toggleSidebar = document.getElementById('toggleSidebar');
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+
+    toggleSidebar.addEventListener('click', () => {
+        
+        mainContent.classList.toggle('expanded');
+        sidebar.classList.toggle('collapsed');
+    });
+</script>
+</body>
+</html>

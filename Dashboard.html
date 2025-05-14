@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Campaign Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+    </style>
+</head>
+<body>
+    <div class="sidebar collapsed" id="sidebar">
+        <div class="brand">
+            <div class="brand-logo"><img src='02 EduCLaaS Logo-Raspberry.png'  style='width: 100%; height: auto; max-width: 100%'/></div>
+            <div class="brand-name">Sales Campaigns</div>
+        </div>
+        
+        <div class="nav-section">
+            <a href="Dashboard.html" class="nav-item active">
+                <div class="nav-icon">📊</div>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon">📋</div>
+                <span>Campaigns List</span>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon">⚙️</div>
+                Master Data
+            </a>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content expanded" id="mainContent">
+        <div class="top-header">
+            <div class="header-left">
+                <button class="toggle-sidebar" id="toggleSidebar">
+                    ☰
+                </button>
+                <h1 class="page-title"> Create Campaign Event</h1>
+            </div>
+            
+            <div class="user-profile">
+                <div class="notifications">
+                    <span>🔔</span>
+                    <div class="notification-badge">3</div>
+                </div>
+                <div class="user-avatar">JD</div>
+                <div class="user-info">
+                    <div class="user-name">John Doe</div>
+                </div>
+            </div>
+        </div>
+            
+            <!-- Filter Section -->
+            <div class="filter-bar">
+                <form class="filter-form">
+                    <div class="filter-group">
+                        <label for="country">Country</label>
+                        <select id="country">
+                            <option value="">All Countries</option>
+                            <option value="MY">Malaysia</option>
+                            <option value="SG">Singapore</option>
+                            <option value="ID">Indonesia</option>
+                            <option value="PH">Philippines</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="channel">Channel</label>
+                        <select id="channel">
+                            <option value="">All Channels</option>
+                            <option value="DIGITAL">Digital</option>
+                            <option value="OFFLINE">Offline</option>
+                            <option value="DATABASE">Database</option>
+                            <option value="ALLIANCE">Alliance</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="status">Status</label>
+                        <select id="status">
+                            <option value="">All Statuses</option>
+                            <option value="draft">Draft</option>
+                            <option value="review">In Review</option>
+                            <option value="approved">Approved</option>
+                            <option value="launched">Launched</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group date-range-group">
+                        <label>Date Range</label>
+                        <div class="date-range-inputs">
+                            <div class="date-input-wrapper">
+                                <label for="startDate">Start Date</label>
+                                <input type="date" id="startDate" placeholder="Start Date">
+                            </div>
+                            <div class="date-input-wrapper">
+                                <label for="endDate">End Date</label>
+                                <input type="date" id="endDate" placeholder="End Date">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button type="button" class="btn btn-outlined">Reset</button>
+                        <button type="button" class="btn btn-primary">Apply</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Status Tiles -->
+            <div class="status-tiles">
+                <div class="status-tile draft">
+                    <div class="status-header">
+                        <h3 class="status-title">Draft</h3>
+                    </div>
+                    <div class="status-count">12</div>
+                    <div class="status-percentage">33.3% of total</div>
+                </div>
+                
+                <div class="status-tile review">
+                    <div class="status-header">
+                        <h3 class="status-title">In Review</h3>
+                    </div>
+                    <div class="status-count">8</div>
+                    <div class="status-percentage">22.2% of total</div>
+                </div>
+                
+                <div class="status-tile approved">
+                    <div class="status-header">
+                        <h3 class="status-title">Approved</h3>
+                    </div>
+                    <div class="status-count">10</div>
+                    <div class="status-percentage">27.8% of total</div>
+                </div>
+                
+                <div class="status-tile launched">
+                    <div class="status-header">
+                        <h3 class="status-title">Launched</h3>
+                    </div>
+                    <div class="status-count">6</div>
+                    <div class="status-percentage">16.7% of total</div>
+                </div>
+            </div>
+            
+            <!-- Business Units Campaigns Section -->
+            <div class="campaigns-section">
+                <div class="section-header">
+                    <h2 class="section-title">Campaign Management</h2>
+                    <button class="btn btn-primary"><a href="form_create.html">Create Campaign</a></button>
+                </div>
+                
+                <!-- Search Box for All Campaigns -->
+                <div class="search-container">
+                    <input type="text" class="search-input" id="campaignSearch" placeholder="Search across all campaigns...">
+                    <button class="search-button" id="searchButton">Search</button>
+                </div>
+                
+                <div id="noResults" class="no-results">No matching campaigns found.</div>
+                
+                <!-- Retail Business Unit -->
+                <div class="business-unit">
+                    <div class="business-unit-header" data-unit="retail">
+                        <h3 class="business-unit-title">Retail</h3>
+                        <div class="toggle-icon">▼</div>
+                    </div>
+                    
+                    <div class="business-unit-content" id="retailContent">
+                        <!-- Lifelong Learning Solution -->
+                        <div class="solution-section">
+                            <div class="solution-header">
+                                <h4 class="solution-title">Lifelong Learning (LLL)</h4>
+                            </div>
+                            
+                            <table class="campaigns-table">
+                                <thead>
+                                    <tr>
+                                        <th>Campaign Name</th>
+                                        <th>Country</th>
+                                        <th>Channel</th>
+                                        <th>Code</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Status</th>
+                                        <th>Budget Spent %</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td data-label="Campaign Name">Spring Learning Festival</td>
+                                        <td data-label="Country">Malaysia</td>
+                                        <td data-label="Channel">Digital</td>
+                                        <td data-label="Code">SC-123456-spring-MY-Q2A</td>
+                                        <td data-label="Start Date">01 May 2025</td>
+                                        <td data-label="End Date">31 May 2025</td>
+                                        <td data-label="Status"><span class="campaign-status status-review">In Review</span></td>
+                                        <td data-label="Budget Spent %"><span class="budget-percentage warning">N/A</span></td>
+                                        <td data-label="Actions">
+                                            <div class="campaign-actions">
+                                                <div class="action-btn action-view">👁️</div>
+                                                <div class="action-btn action-edit"><a href="form_edit.html">✏️</a></div>
+                                                <div class="action-btn action-delete">🗑️</div>
+                                                <div class="action-btn action-approve" style="display: none;">✅</div>
+                                                <div class="action-btn action-launch" style="display: none;">🚀</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Work Study Degree Solution -->
+                        <div class="solution-section">
+                            <div class="solution-header">
+                                <h4 class="solution-title">Work Study Degree (WSD)</h4>
+                            </div>
+                            
+                            <table class="campaigns-table">
+                                <thead>
+                                    <tr>
+                                        <th>Campaign Name</th>
+                                        <th>Country</th>
+                                        <th>Channel</th>
+                                        <th>Code</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Status</th>
+                                        <th>Budget Spent %</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td data-label="Campaign Name">Career Advancement Program</td>
+                                        <td data-label="Country">Singapore</td>
+                                        <td data-label="Channel">Database</td>
+                                        <td data-label="Code">SC-789012-career-SG-Q2F</td>
+                                        <td data-label="Start Date">15 May 2025</td>
+                                        <td data-label="End Date">15 Jun 2025</td>
+                                        <td data-label="Status"><span class="campaign-status status-draft">Draft</span></td>
+                                        <td data-label="Budget Spent %"><span class="budget-percentage on-track">N/A</span></td>
+                                        <td data-label="Actions">
+                                            <div class="campaign-actions">
+                                                <div class="action-btn action-view">👁️</div>
+                                                <div class="action-btn action-edit"><a href="form_edit.html">✏️</a></div>
+                                                <div class="action-btn action-delete">🗑️</div>
+                                                <div class="action-btn action-approve" style="display: none;">✅</div>
+                                                <div class="action-btn action-launch" style="display: none;">🚀</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Higher Education Solution -->
+                        <div class="solution-section">
+                            <div class="solution-header">
+                                <h4 class="solution-title">Higher Education (HED)</h4>
+                            </div>
+                            
+                            <table class="campaigns-table">
+                                <thead>
+                                    <tr>
+                                        <th>Campaign Name</th>
+                                        <th>Country</th>
+                                        <th>Channel</th>
+                                        <th>Code</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Status</th>
+                                        <th>Budget Spent %</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td data-label="Campaign Name">Digital Marketing Mastery</td>
+                                        <td data-label="Country">Singapore</td>
+                                        <td data-label="Channel">Affiliates</td>
+                                        <td data-label="Code">SC-456789-digital-SG-Q2B</td>
+                                        <td data-label="Start Date">15 May 2025</td>
+                                        <td data-label="End Date">15 Jun 2025</td>
+                                        <td data-label="Status"><span class="campaign-status status-approved">Approved</span></td>
+                                        <td data-label="Budget Spent %"><span class="budget-percentage under">N/A</span></td>
+                                        <td data-label="Actions">
+                                            <div class="campaign-actions">
+                                                <div class="action-btn action-view">👁️</div>
+                                                <div class="action-btn action-edit"><a href="form_edit.html">✏️</a></div>
+                                                <div class="action-btn action-delete">🗑️</div>
+                                                <div class="action-btn action-approve" style="display: none;">✅</div>
+                                                <div class="action-btn action-launch" style="display: none;">🚀</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Alliance Business Unit -->
+                <div class="business-unit">
+                    <div class="business-unit-header" data-unit="alliance">
+                        <h3 class="business-unit-title">Alliance</h3>
+                        <div class="toggle-icon">▼</div>
+                    </div>
+                    
+                    <div class="business-unit-content" id="allianceContent">
+                        <!-- UA Solution -->
+                        <div class="solution-section">
+                            <div class="solution-header">
+                                <h4 class="solution-title">UA</h4>
+                            </div>
+                            
+                            <table class="campaigns-table">
+                                <thead>
+                                    <tr>
+                                        <th>Campaign Name</th>
+                                        <th>Country</th>
+                                        <th>Channel</th>
+                                        <th>Code</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Status</th>
+                                        <th>Budget Spent %</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td data-label="Campaign Name">University Alliance Program</td>
+                                        <td data-label="Country">Philippines</td>
+                                        <td data-label="Channel">Offline</td>
+                                        <td data-label="Code">SC-246810-ua-PH-Q2H</td>
+                                        <td data-label="Start Date">01 Jun 2025</td>
+                                        <td data-label="End Date">30 Jun 2025</td>
+                                        <td data-label="Status"><span class="campaign-status status-approved">Approved</span></td>
+                                        <td data-label="Budget Spent %"><span class="budget-percentage over">N/A</span></td>
+                                        <td data-label="Actions">
+                                            <div class="campaign-actions">
+                                                <div class="action-btn action-view">👁️</div>
+                                                <div class="action-btn action-edit"><a href="form_edit.html">✏️</a></div>
+                                                <div class="action-btn action-delete">🗑️</div>
+                                                <div class="action-btn action-approve" style="display: none;">✅</div>
+                                                <div class="action-btn action-launch" style="display: none;">🚀</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- ATP Solution -->
+                        <div class="solution-section">
+                            <div class="solution-header">
+                                <h4 class="solution-title">ATP</h4>
+                            </div>
+                            
+                            <table class="campaigns-table">
+                                <thead>
+                                    <tr>
+                                        <th>Campaign Name</th>
+                                        <th>Country</th>
+                                        <th>Channel</th>
+                                        <th>Code</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Status</th>
+                                        <th>Budget Spent %</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td data-label="Campaign Name">Tech Career Bootcamp</td>
+                                        <td data-label="Country">Indonesia</td>
+                                        <td data-label="Channel">Digital</td>
+                                        <td data-label="Code">SC-789012-tech-ID-Q2C</td>
+                                        <td data-label="Start Date">01 Jun 2025</td>
+                                        <td data-label="End Date">30 Jun 2025</td>
+                                        <td data-label="Status"><span class="campaign-status status-draft">Draft</span></td>
+                                        <td data-label="Budget Spent %"><span class="budget-percentage on-track">N/A</span></td>
+                                        <td data-label="Actions">
+                                            <div class="campaign-actions">
+                                                <div class="action-btn action-view">👁️</div>
+                                                <div class="action-btn action-edit"><a href="form_edit.html">✏️</a></div>
+                                                <div class="action-btn action-delete">🗑️</div>
+                                                <div class="action-btn action-approve" style="display: none;">✅</div>
+                                                <div class="action-btn action-launch" style="display: none;">🚀</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Enterprise Business Unit -->
+                <div class="business-unit">
+                    <div class="business-unit-header" data-unit="enterprise">
+                        <h3 class="business-unit-title">Enterprise</h3>
+                        <div class="toggle-icon">▼</div>
+                    </div>
+                    
+                    <div class="business-unit-content" id="enterpriseContent">
+                        <!-- ENT Solution -->
+                        <div class="solution-section">
+                            <div class="solution-header">
+                                <h4 class="solution-title">ENT</h4>
+                            </div>
+                            
+                            <table class="campaigns-table">
+                                <thead>
+                                    <tr>
+                                        <th>Campaign Name</th>
+                                        <th>Country</th>
+                                        <th>Channel</th>
+                                        <th>Code</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Status</th>
+                                        <th>Budget Spent %</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td data-label="Campaign Name">Leadership Summit</td>
+                                        <td data-label="Country">Philippines</td>
+                                        <td data-label="Channel">Affiliates</td>
+                                        <td data-label="Code">SC-345678-lead-PH-Q2D</td>
+                                        <td data-label="Start Date">10 May 2025</td>
+                                        <td data-label="End Date">20 May 2025</td>
+                                        <td data-label="Status"><span class="campaign-status status-launched">Launched</span></td>
+                                        <td data-label="Budget Spent %"><span class="budget-percentage under">20%</span></td>
+                                        <td data-label="Actions">
+                                            <div class="campaign-actions">
+                                                <div class="action-btn action-view">👁️</div>
+                                                <div class="action-btn action-edit"><a href="form_edit.html">✏️</a></div>
+                                                <div class="action-btn action-delete">🗑️</div>
+                                                <div class="action-btn action-approve" style="display: none;">✅</div>
+                                                <div class="action-btn action-launch" style="display: none;">🚀</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+
+        toggleSidebar.addEventListener('click', () => {
+            mainContent.classList.toggle('expanded');
+            sidebar.classList.toggle('collapsed');
+        });
+        
+        // Collapsible Business Unit sections
+        document.querySelectorAll('.business-unit-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const unitName = header.getAttribute('data-unit');
+                const content = document.getElementById(`${unitName}Content`);
+                
+                // Toggle collapse
+                header.classList.toggle('collapsed');
+                content.classList.toggle('collapsed');
+                
+                // Update toggle icon
+                const icon = header.querySelector('.toggle-icon');
+                if (content.classList.contains('collapsed')) {
+                    icon.textContent = '▶';
+                } else {
+                    icon.textContent = '▼';
+                }
+            });
+        });
+
+        // Function to initialize and show/hide conditional action buttons
+        function initializeActionButtons() {
+            // Find all campaign rows
+            const campaignRows = document.querySelectorAll('.campaigns-table tbody tr');
+            
+            // Process each row
+            campaignRows.forEach(row => {
+                // Get the status element
+                const statusElement = row.querySelector('td[data-label="Status"] span');
+                const status = statusElement ? statusElement.textContent.trim().toLowerCase() : '';
+                
+                // Get action buttons
+                const approveButton = row.querySelector('.action-approve');
+                const launchButton = row.querySelector('.action-launch');
+                
+                // Hide both buttons initially
+                if (approveButton) approveButton.style.display = 'none';
+                if (launchButton) launchButton.style.display = 'none';
+                
+                // Show approve button for draft or in review status
+                if (status === 'draft' || status === 'in review') {
+                    if (approveButton) approveButton.style.display = 'flex';
+                }
+                
+                // Show launch button for approved status
+                if (status === 'approved') {
+                    if (launchButton) launchButton.style.display = 'flex';
+                }
+            });
+        }
+
+        // Add event listeners for the new buttons
+        function setupActionButtonEvents() {
+            // Approve button click event
+            document.querySelectorAll('.action-approve').forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const campaignName = row.querySelector('td[data-label="Campaign Name"]').textContent;
+                    
+                    if (confirm(`Are you sure you want to approve the campaign "${campaignName}"?`)) {
+                        // Change status to "Approved"
+                        const statusCell = row.querySelector('td[data-label="Status"] span');
+                        statusCell.textContent = 'Approved';
+                        statusCell.className = 'campaign-status status-approved';
+                        
+                        // Update action buttons visibility
+                        this.style.display = 'none';
+                        row.querySelector('.action-launch').style.display = 'flex';
+                        
+                        alert(`Campaign "${campaignName}" has been approved.`);
+                    }
+                });
+            });
+            
+            // Launch button click event
+            document.querySelectorAll('.action-launch').forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const campaignName = row.querySelector('td[data-label="Campaign Name"]').textContent;
+                    
+                    if (confirm(`Are you sure you want to launch the campaign "${campaignName}"?`)) {
+                        // Change status to "Launched"
+                        const statusCell = row.querySelector('td[data-label="Status"] span');
+                        statusCell.textContent = 'Launched';
+                        statusCell.className = 'campaign-status status-launched';
+                        
+                        // Update action buttons visibility
+                        this.style.display = 'none';
+                        
+                        alert(`Campaign "${campaignName}" has been launched.`);
+                    }
+                });
+            });
+        }
+
+        // Initialize action buttons when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeActionButtons();
+            setupActionButtonEvents();
+        });
+    </script>
+    </body>
+    </html>
