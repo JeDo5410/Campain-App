@@ -671,25 +671,16 @@
                         </div>
                         
                         <div class="span-12">
-                            <div class="form-group required" style="display: flex; gap: 20px;">
-                                <div style="flex: 1;">
-                                    <label for="country">Country</label>
-                                    <select id="country" name="country" required>
-                                        <option value="">Select a country</option>
-                                        <option value="MY">Malaysia</option>
-                                        <option value="SG">Singapore</option>
-                                        <option value="ID">Indonesia</option>
-                                        <option value="PH">Philippines</option>
-                                        <!-- Add other countries as needed -->
-                                    </select>
-                                </div>
-                                <div style="flex: 1;">
-                                    <label for="marketingCampaignCode">Marketing Campaign Code</label>
-                                    <select id="marketingCampaignCode" name="marketingCampaignCode" required>
-                                        <option value="">Select a marketing campaign code</option>
-                                        <!-- Marketing codes will be populated based on selected country -->
-                                    </select>
-                                </div>
+                            <div class="form-group required">
+                                <label for="country">Country</label>
+                                <select id="country" name="country" required>
+                                    <option value="">Select a country</option>
+                                    <option value="MY">Malaysia</option>
+                                    <option value="SG">Singapore</option>
+                                    <option value="ID">Indonesia</option>
+                                    <option value="PH">Philippines</option>
+                                    <!-- Add other countries as needed -->
+                                </select>
                             </div>
                         </div>
 
@@ -998,36 +989,6 @@ salesCodeInput.addEventListener('blur', function() {
 });
         });
     </script>
-    <script>
-    const countryDropdown = document.getElementById('country');
-    const marketingCampaignDropdown = document.getElementById('marketingCampaignCode');
-
-    const marketingCodesByCountry = {
-        "MY": ["HEDMYLLL2504", "HEDMYLLL2505", "HEDMYLLL2506"],
-        "SG": ["HEDSGLLL3101", "HEDSGLLL3102"],
-        "ID": ["HEDIDLLL3201", "HEDIDLLL3202"],
-        "PH": ["HEDPHLLL3301", "HEDPHLLL3302"]
-        // Add more country codes and marketing codes as needed
-    };
-
-    // Function to update the marketing codes based on selected country
-    countryDropdown.addEventListener('change', function() {
-        const selectedCountry = countryDropdown.value;
-
-        // Clear the existing options in the marketing code dropdown
-        marketingCampaignDropdown.innerHTML = '<option value="">Select a marketing campaign code</option>';
-
-        // Populate the marketing code dropdown based on selected country
-        if (selectedCountry && marketingCodesByCountry[selectedCountry]) {
-            marketingCodesByCountry[selectedCountry].forEach(function(code) {
-                const option = document.createElement('option');
-                option.value = code;
-                option.textContent = code;
-                marketingCampaignDropdown.appendChild(option);
-            });
-        }
-    });
-</script>
 <script>
     const toggleSidebar = document.getElementById('toggleSidebar');
     const sidebar = document.getElementById('sidebar');
