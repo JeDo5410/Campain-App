@@ -522,15 +522,101 @@
             font-weight: bold;
         }
 
-        #marketingBudget {
+        #marketingBudget, #totalBudget, #budgetFacebook, #budgetTikTok, #budgetLinkedIn, #budgetYouTube, 
+        .budget-breakdown-field {
             padding-left: 25px; /* Make space for the dollar sign */
             width: 100%;
             box-sizing: border-box;
         }
         
+        .channel-subsection {
+            background-color: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-left: 4px solid var(--primary);
+            padding: 24px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .channel-subsection h3 {
+            color: var(--primary-dark) !important;
+            margin-bottom: 20px !important;
+            font-weight: 600;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .channel-subsection h3::before {
+            content: '⚙';
+            margin-right: 8px;
+            font-size: 14px;
+            color: var(--primary);
+        }
+        
+        .database-panel {
+            background-color: #f8fafc;
+            border: 2px solid #e2e8f0 !important;
+            border-left: 4px solid var(--primary) !important;
+            min-height: 380px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .database-panel h4 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: var(--primary-dark) !important;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .database-panel h4::before {
+            content: '📊';
+            margin-right: 8px;
+            font-size: 14px;
+        }
+        
+        .database-panel .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .database-panel .form-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .database-panel .form-group label {
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .database-panels {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        
         @keyframes loading {
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
+        }
+        
+        .config-badge {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 8px;
         }
         
         @media (max-width: 768px) {
@@ -648,25 +734,32 @@
             </div>
             
             <div class="form-content">
-                <!-- Campaign Identification -->
+                <!-- 1. Sales Campaign High-Level Info -->
                 <div class="form-section">
                     <div class="section-header">
                         <div class="section-number">1</div>
-                        <h2 class="section-title">Campaign Identification</h2>
+                        <h2 class="section-title">Sales Campaign Information</h2>
                     </div>
                     
                     <div class="form-grid">
                         <div class="span-12">
                             <div class="form-group required">
-                                <label for="eventName">Event Name</label>
-                                <input type="text" id="eventName" name="eventName" required placeholder="Enter the event name">
+                                <label for="salesCampaignName">Sales Campaign Name</label>
+                                <input type="text" id="salesCampaignName" name="salesCampaignName" required placeholder="Enter the sales campaign name">
                             </div>
                         </div>
                         
                         <div class="span-12">
                             <div class="form-group required">
-                                <label for="campaignDescription">Sales Campaign Description</label>
-                                <textarea id="campaignDescription" name="campaignDescription" required placeholder="Provide a detailed description of the sales campaign"></textarea>
+                                <label for="salesManager">Sales Manager</label>
+                                <select id="salesManager" name="salesManager" required>
+                                    <option value="">Select a sales manager</option>
+                                    <option value="john_doe">John Doe (Sample)</option>
+                                    <option value="jane_smith">Jane Smith (Sample)</option>
+                                    <option value="michael_johnson">Michael Johnson (Sample)</option>
+                                    <option value="sarah_williams">Sarah Williams (Sample)</option>
+                                    <option value="david_brown">David Brown (Sample)</option>
+                                </select>
                             </div>
                         </div>
                         
@@ -679,177 +772,386 @@
                                     <option value="SG">Singapore</option>
                                     <option value="ID">Indonesia</option>
                                     <option value="PH">Philippines</option>
-                                    <!-- Add other countries as needed -->
                                 </select>
                             </div>
                         </div>
 
                         <div class="span-12">
                             <div class="form-group required">
-                                <label for="salesCampaignCode">Sales Campaign Code</label>
-                                <input type="text" id="salesCampaignCode" name="salesCampaignCode" required placeholder="Format: [Channel]-[Date]-[Text]-[Country]-[Solution]">
-                                <div class="help-text">Example: <span class="code-format">SI-250101-Example-PH-WSD</span></div>
+                                <label for="solution">Solution (marketing campaign code)</label>
+                                <select id="solution" name="solution" required>
+                                    <option value="">Select a solution</option>
+                                    <option value="marketing_campaign_code_1">Marketing Campaign Code 1</option>
+                                    <option value="marketing_campaign_code_2">Marketing Campaign Code 2</option>
+                                    <option value="marketing_campaign_code_3">Marketing Campaign Code 3</option>
+                                    <option value="marketing_campaign_code_4">Marketing Campaign Code 4</option>
+                                    <option value="marketing_campaign_code_5">Marketing Campaign Code 5</option>
+                                </select>
                             </div>
                         </div>
+
                         
-                        
+                        <div class="span-12">
+                            <div class="form-group required" style="display: flex; gap: 20px;">
+                                <div style="flex: 1;">
+                                    <label for="startDate">Campaign Start Date</label>
+                                    <input type="date" id="startDate" name="startDate" required>
+                                </div>
+                                <div style="flex: 1;">
+                                    <label for="endDate">Campaign End Date</label>
+                                    <input type="date" id="endDate" name="endDate" required>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 
-                <!-- Campaign Classification -->
+                <!-- 2. Define Channel -->
                 <div class="form-section">
                     <div class="section-header">
                         <div class="section-number">2</div>
-                        <h2 class="section-title">Campaign Classification</h2>
+                        <h2 class="section-title">Define Channel</h2>
                     </div>
                     
                     <div class="form-grid">
                         <div class="span-12">
                             <div class="form-group required">
-                                <label for="solution">Solution</label>
-                                <div class="select-wrapper">
-                                    <select id="solution" name="solution" required>
-                                        <option value="">Select a solution</option>
-                                        <option value="lll">Lifelong Learning (LLL)</option>
-                                        <option value="wsd">Work-Study Degree (WSD)</option>
-                                    </select>
+                                <label>Channel Type (Multi-Select)</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-item" data-channel="digital">
+                                        <input type="checkbox" name="channel" value="DIGITAL" id="channel-digital"> DIGITAL
+                                    </label>
+                                    <label class="checkbox-item" data-channel="database">
+                                        <input type="checkbox" name="channel" value="DATABASE" id="channel-database"> DATABASE
+                                    </label>
+                                    <label class="checkbox-item" data-channel="offline">
+                                        <input type="checkbox" name="channel" value="OFFLINE" id="channel-offline"> OFFLINE
+                                    </label>
+                                    <label class="checkbox-item" data-channel="alliances">
+                                        <input type="checkbox" name="channel" value="ALLIANCES" id="channel-alliances"> ALLIANCES
+                                    </label>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="span-12">
-                            <div class="form-group required">
-                                <label>Channel</label>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-item">
-                                        <input type="checkbox" name="channel" value="DIGITAL"> DIGITAL
-                                    </label>
-                                    <label class="checkbox-item">
-                                        <input type="checkbox" name="channel" value="OFFLINE"> OFFLINE
-                                    </label>
-                                    <label class="checkbox-item">
-                                        <input type="checkbox" name="channel" value="DATABASE"> DATABASE
-                                    </label>
-                                    <label class="checkbox-item">
-                                        <input type="checkbox" name="channel" value="AFFILIATES"> AFFILIATES
-                                    </label>
+
+                        <!-- Digital Channel Section -->
+                        <div class="span-12" id="digital-section" style="display: none;">
+                            <div class="channel-subsection">
+                                <h3>Digital Channel Configuration<span class="config-badge">Config Panel</span></h3>
+                                
+                                <div class="form-group required">
+                                    <label>Social Media Platforms</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-item" data-platform="facebook">
+                                            <input type="checkbox" name="socialMedia" value="Facebook" id="social-facebook"> Facebook
+                                        </label>
+                                        <label class="checkbox-item" data-platform="tiktok">
+                                            <input type="checkbox" name="socialMedia" value="TikTok" id="social-tiktok"> TikTok
+                                        </label>
+                                        <label class="checkbox-item" data-platform="linkedin">
+                                            <input type="checkbox" name="socialMedia" value="LinkedIn" id="social-linkedin"> LinkedIn
+                                        </label>
+                                        <label class="checkbox-item" data-platform="youtube">
+                                            <input type="checkbox" name="socialMedia" value="YouTube" id="social-youtube"> YouTube
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div id="budget-fields">
+                                    <div class="form-group" id="facebook-budget" style="display: none;">
+                                        <label for="budgetFacebook">Facebook Budget Allocation</label>
+                                        <div class="input-with-symbol">
+                                            <span class="currency-symbol">$</span>
+                                            <input type="number" id="budgetFacebook" name="budgetFacebook" placeholder="Enter budget" min="0" step="0.01" onchange="updateDigitalBudget()">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="tiktok-budget" style="display: none;">
+                                        <label for="budgetTikTok">TikTok Budget Allocation</label>
+                                        <div class="input-with-symbol">
+                                            <span class="currency-symbol">$</span>
+                                            <input type="number" id="budgetTikTok" name="budgetTikTok" placeholder="Enter budget" min="0" step="0.01" onchange="updateDigitalBudget()">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="linkedin-budget" style="display: none;">
+                                        <label for="budgetLinkedIn">LinkedIn Budget Allocation</label>
+                                        <div class="input-with-symbol">
+                                            <span class="currency-symbol">$</span>
+                                            <input type="number" id="budgetLinkedIn" name="budgetLinkedIn" placeholder="Enter budget" min="0" step="0.01" onchange="updateDigitalBudget()">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="youtube-budget" style="display: none;">
+                                        <label for="budgetYouTube">YouTube Budget Allocation</label>
+                                        <div class="input-with-symbol">
+                                            <span class="currency-symbol">$</span>
+                                            <input type="number" id="budgetYouTube" name="budgetYouTube" placeholder="Enter budget" min="0" step="0.01" onchange="updateDigitalBudget()">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Database Channel Section -->
+                        <div class="span-12" id="database-section" style="display: none;">
+                            <div class="channel-subsection">
+                                <h3>Database Channel Configuration<span class="config-badge">Config Panel</span></h3>
+                                
+                                <div class="database-panels" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                                    <!-- Active Contacts Panel -->
+                                    <div class="database-panel" style="border: 2px solid var(--border); border-radius: 8px; padding: 15px;">
+                                        <h4 style="color: var(--primary-dark); margin-bottom: 15px;">Active Contacts</h4>
+                                        <div class="form-group">
+                                            <label for="activeQuantity">Target Quantity</label>
+                                            <input type="number" id="activeQuantity" name="activeQuantity" placeholder="Enter quantity" min="0" onchange="updateTotalContacts()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="activeCountry">Country</label>
+                                            <select id="activeCountry" name="activeCountry">
+                                                <option value="">Select Country</option>
+                                                <option value="MY">Malaysia</option>
+                                                <option value="SG">Singapore</option>
+                                                <option value="ID">Indonesia</option>
+                                                <option value="PH">Philippines</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="activeIndustry">Industry</label>
+                                            <select id="activeIndustry" name="activeIndustry">
+                                                <option value="">Select Industry</option>
+                                                <option value="ICT">ICT</option>
+                                                <option value="HR">HR</option>
+                                                <option value="Finance">Finance</option>
+                                                <option value="Healthcare">Healthcare</option>
+                                                <option value="Education">Education</option>
+                                                <option value="Manufacturing">Manufacturing</option>
+                                                <option value="Retail">Retail</option>
+                                                <option value="Government">Government</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="activeJobTitle">Job Title</label>
+                                            <select id="activeJobTitle" name="activeJobTitle">
+                                                <option value="">Select Job Title</option>
+                                                <option value="CEO">CEO</option>
+                                                <option value="CTO">CTO</option>
+                                                <option value="CFO">CFO</option>
+                                                <option value="Manager">Manager</option>
+                                                <option value="Director">Director</option>
+                                                <option value="VP">VP</option>
+                                                <option value="Senior Manager">Senior Manager</option>
+                                                <option value="Team Lead">Team Lead</option>
+                                                <option value="Specialist">Specialist</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Dormant Contacts Panel -->
+                                    <div class="database-panel" style="border: 2px solid var(--border); border-radius: 8px; padding: 15px;">
+                                        <h4 style="color: var(--primary-dark); margin-bottom: 15px;">Dormant Contacts</h4>
+                                        <div class="form-group">
+                                            <label for="dormantQuantity">Target Quantity</label>
+                                            <input type="number" id="dormantQuantity" name="dormantQuantity" placeholder="Enter quantity" min="0" onchange="updateTotalContacts()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dormantCountry">Country</label>
+                                            <select id="dormantCountry" name="dormantCountry">
+                                                <option value="">Select Country</option>
+                                                <option value="MY">Malaysia</option>
+                                                <option value="SG">Singapore</option>
+                                                <option value="ID">Indonesia</option>
+                                                <option value="PH">Philippines</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dormantIndustry">Industry</label>
+                                            <select id="dormantIndustry" name="dormantIndustry">
+                                                <option value="">Select Industry</option>
+                                                <option value="ICT">ICT</option>
+                                                <option value="HR">HR</option>
+                                                <option value="Finance">Finance</option>
+                                                <option value="Healthcare">Healthcare</option>
+                                                <option value="Education">Education</option>
+                                                <option value="Manufacturing">Manufacturing</option>
+                                                <option value="Retail">Retail</option>
+                                                <option value="Government">Government</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dormantJobTitle">Job Title</label>
+                                            <select id="dormantJobTitle" name="dormantJobTitle">
+                                                <option value="">Select Job Title</option>
+                                                <option value="CEO">CEO</option>
+                                                <option value="CTO">CTO</option>
+                                                <option value="CFO">CFO</option>
+                                                <option value="Manager">Manager</option>
+                                                <option value="Director">Director</option>
+                                                <option value="VP">VP</option>
+                                                <option value="Senior Manager">Senior Manager</option>
+                                                <option value="Team Lead">Team Lead</option>
+                                                <option value="Specialist">Specialist</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- New Curated Panel -->
+                                    <div class="database-panel" style="border: 2px solid var(--border); border-radius: 8px; padding: 15px;">
+                                        <h4 style="color: var(--primary-dark); margin-bottom: 15px;">New Curated</h4>
+                                        <div class="form-group">
+                                            <label for="newCuratedQuantity">Target Quantity</label>
+                                            <input type="number" id="newCuratedQuantity" name="newCuratedQuantity" placeholder="Enter quantity" min="0" onchange="updateTotalContacts()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="newCuratedCountry">Country</label>
+                                            <select id="newCuratedCountry" name="newCuratedCountry">
+                                                <option value="">Select Country</option>
+                                                <option value="MY">Malaysia</option>
+                                                <option value="SG">Singapore</option>
+                                                <option value="ID">Indonesia</option>
+                                                <option value="PH">Philippines</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="newCuratedIndustry">Industry</label>
+                                            <select id="newCuratedIndustry" name="newCuratedIndustry">
+                                                <option value="">Select Industry</option>
+                                                <option value="ICT">ICT</option>
+                                                <option value="HR">HR</option>
+                                                <option value="Finance">Finance</option>
+                                                <option value="Healthcare">Healthcare</option>
+                                                <option value="Education">Education</option>
+                                                <option value="Manufacturing">Manufacturing</option>
+                                                <option value="Retail">Retail</option>
+                                                <option value="Government">Government</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="newCuratedJobTitle">Job Title</label>
+                                            <select id="newCuratedJobTitle" name="newCuratedJobTitle">
+                                                <option value="">Select Job Title</option>
+                                                <option value="CEO">CEO</option>
+                                                <option value="CTO">CTO</option>
+                                                <option value="CFO">CFO</option>
+                                                <option value="Manager">Manager</option>
+                                                <option value="Director">Director</option>
+                                                <option value="VP">VP</option>
+                                                <option value="Senior Manager">Senior Manager</option>
+                                                <option value="Team Lead">Team Lead</option>
+                                                <option value="Specialist">Specialist</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="totalContacts">Total Contacts Requested</label>
+                                    <input type="number" id="totalContacts" name="totalContacts" readonly style="background-color: #f5f5f5; font-weight: bold;">
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary" onclick="earmarkContacts()">Earmark Contacts</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Offline Channel Section -->
+                        <div class="span-12" id="offline-section" style="display: none;">
+                            <div class="channel-subsection">
+                                <h3>Offline Channel Configuration<span class="config-badge">Config Panel</span></h3>
+                                
+                                <div class="form-group required">
+                                    <label for="eventName">Event Name</label>
+                                    <input type="text" id="eventName" name="eventName" placeholder="Enter event name">
+                                </div>
+                                
+                                <div class="form-group required">
+                                    <label for="eventLocation">Event Location</label>
+                                    <input type="text" id="eventLocation" name="eventLocation" placeholder="Enter event location">
+                                </div>
+                                
+                                <div class="form-group required">
+                                    <label for="participants">No. of Participants (Pax)</label>
+                                    <input type="number" id="participants" name="participants" placeholder="Enter number of participants" min="0">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Alliances Channel Section -->
+                        <div class="span-12" id="alliances-section" style="display: none;">
+                            <div class="channel-subsection">
+                                <h3>Alliances Channel Configuration<span class="config-badge">Config Panel</span></h3>
+                                
+                                <div class="form-group required">
+                                    <label for="allianceType">Type of Alliance</label>
+                                    <select id="allianceType" name="allianceType">
+                                        <option value="">Select alliance type</option>
+                                        <option value="employer">Employer</option>
+                                        <option value="school">School</option>
+                                        <option value="influencer">Influencer</option>
+                                        <option value="partner">Partner</option>
+                                        <option value="vendor">Vendor</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group required">
+                                    <label for="alliancePartner">Name of Alliance Partner</label>
+                                    <input type="text" id="alliancePartner" name="alliancePartner" placeholder="Enter alliance partner name">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Timeline -->
+                <!-- 3. Define Marketing Budget -->
                 <div class="form-section">
                     <div class="section-header">
                         <div class="section-number">3</div>
-                        <h2 class="section-title">Timeline</h2>
+                        <h2 class="section-title">Define Marketing Budget</h2>
                     </div>
                     
                     <div class="form-grid">
                         <div class="span-12">
-                            <div class="form-group required">
-                                <label for="startDate">Start Date</label>
-                                <input type="date" id="startDate" name="startDate" required>
-                            </div>
-                        </div>
-                        
-                        <div class="span-12">
-                            <div class="form-group required">
-                                <label for="endDate">End Date</label>
-                                <input type="date" id="endDate" name="endDate" required>
-                            </div>
-                        </div>
-                        
-                        <div class="span-12">
                             <div class="form-group">
-                                <label for="campaignDetails">Sales Campaign Details</label>
-                                <textarea id="campaignDetails" name="campaignDetails" placeholder="Include any additional details about the campaign timeline, milestones, or key dates"></textarea>
+                                <label for="totalBudget">Total Budget (Auto-calculated)</label>
+                                <div class="input-with-symbol">
+                                    <span class="currency-symbol">$</span>
+                                    <input type="number" id="totalBudget" name="totalBudget" readonly placeholder="Calculated from channel breakdown" min="0" step="0.01" style="background-color: #f5f5f5; font-weight: bold;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="span-12">
+                            <h4 style="color: var(--primary-dark); margin-bottom: 15px;">Breakdown by Channel</h4>
+                            <div id="budget-breakdown">
+                                <!-- Budget breakdown fields will be populated dynamically based on selected channels -->
+                                <div class="help-text">Select channels in the previous section to see budget breakdown fields</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Budget Information -->
+                <!-- 4. Define Targets -->
                 <div class="form-section">
                     <div class="section-header">
                         <div class="section-number">4</div>
-                        <h2 class="section-title">Budget Information</h2>
+                        <h2 class="section-title">Define Targets</h2>
                     </div>
                     
                     <div class="form-grid">
                         <div class="span-12">
-                            <div class="form-group required">
-                                <label for="marketingBudget">Marketing Budget</label>
-                                <div class="input-with-symbol">
-                                    <span class="currency-symbol">$</span>
-                                    <input type="number" id="marketingBudget" name="marketingBudget" required 
-                                           placeholder="Enter budget amount" min="0" step="0.01">
+                            <div class="form-group required" style="display: flex; gap: 20px;">
+                                <div style="flex: 1;">
+                                    <label for="leadsTarget">Leads Target</label>
+                                    <input type="number" id="leadsTarget" name="leadsTarget" required placeholder="Enter leads target" min="0">
+                                </div>
+                                <div style="flex: 1;">
+                                    <label for="salesTarget">Sales Target</label>
+                                    <input type="number" id="salesTarget" name="salesTarget" required placeholder="Enter sales target" min="0">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Target Metrics -->
-                <div class="form-section">
-                    <div class="section-header">
-                        <div class="section-number">5</div>
-                        <h2 class="section-title">Campaign Target Metrics</h2>
-                    </div>
-                    
-                    <div class="form-grid">
-
-                        <div class="span-12">
-                            <div class="form-group required">
-                                <label for="contactTarget">CONTACT Target</label>
-                                <input type="number" id="contactTarget" name="contactTarget" required placeholder="Enter number" min="0">
-                            </div>
-                        </div>
-                        
-                        <div class="span-12">
-                            <div class="form-group required">
-                                <label for="interestTarget">INTEREST Target</label>
-                                <input type="number" id="interestTarget" name="interestTarget" required placeholder="Enter number" min="0">
-                            </div>
-                        </div>
-                        
-                        <div class="span-12">
-                            <div class="form-group required">
-                                <label for="leadsTarget">LEADS Target</label>
-                                <input type="number" id="leadsTarget" name="leadsTarget" required placeholder="Enter number" min="0">
-                            </div>
-                        </div>
-                        
-                        <div class="span-12">
-                            <div class="form-group required">
-                                <label for="opportunityTarget">OPPORTUNITY Target</label>
-                                <input type="number" id="opportunityTarget" name="opportunityTarget" required placeholder="Enter number" min="0">
-                            </div>
-                        </div>
-                        
-                        <div class="span-12">
-                            <div class="form-group required">
-                                <label for="salesTarget">SALES TARGET</label>
-                                <input type="number" id="salesTarget" name="salesTarget" required placeholder="Enter number" min="0">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                    <!-- Campaign Notes -->
-                <div class="form-section">
-                    <div class="section-header">
-                        <div class="section-number">6</div>
-                        <h2 class="section-title">Notes</h2>
-                    </div>
-                        
-                        <div class="span-12">
-                            <div class="form-group">
-                                <label for="campaignDescription">Other Details</label>
-                                <textarea id="campaignDescription" name="campaignDescription" placeholder="Enter notes here."></textarea>
-                            </div>
-                        </div>
                 <!-- </div> -->
                 
                 <!-- Additional Information -->
@@ -912,35 +1214,34 @@
     </div>
 
     <script>
+
         // Add basic interactivity
         document.addEventListener('DOMContentLoaded', function() {
-    // Channel checkbox styling with single selection
-    const checkboxItems = document.querySelectorAll('.checkbox-item');
-    checkboxItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            const checkbox = this.querySelector('input[type="checkbox"]');
             
-            // If clicking anywhere but directly on the checkbox
-            if (e.target !== checkbox) {
-                checkbox.checked = !checkbox.checked;
-            }
             
-            // If this checkbox is now checked, uncheck all others
-            if (checkbox.checked) {
-                checkboxItems.forEach(otherItem => {
-                    if (otherItem !== item) {
-                        const otherCheckbox = otherItem.querySelector('input[type="checkbox"]');
-                        otherCheckbox.checked = false;
-                        otherItem.classList.remove('selected');
-                    }
+            // Channel checkbox styling and functionality
+            const checkboxItems = document.querySelectorAll('.checkbox-item');
+            checkboxItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    const checkbox = this.querySelector('input[type="checkbox"]');
+                    
+                    // Let browser handle checkbox toggle, then update UI
+                    setTimeout(() => {
+                        // Update the selected class for this item
+                        this.classList.toggle('selected', checkbox.checked);
+                        
+                        // Handle channel section toggling
+                        if (this.dataset.channel) {
+                            toggleChannelSection(this.dataset.channel, this);
+                        }
+                        
+                        // Handle platform budget field toggling
+                        if (this.dataset.platform) {
+                            toggleBudgetField(this.dataset.platform, this);
+                        }
+                    }, 0);
                 });
-            }
-            
-            // Update the selected class for this item
-            this.classList.toggle('selected', checkbox.checked);
-        });
-    });
-
+            });
             
             // Form submission (prevent default for demo)
             document.getElementById('campaignForm').addEventListener('submit', function(e) {
@@ -975,19 +1276,167 @@
                     this.value = '';
                 }
             });
-            
-            // Code format validation
-            const salesCodeInput = document.getElementById('salesCampaignCode');
-salesCodeInput.addEventListener('blur', function() {
-    const regex = /^[A-Z]{2}-\d{6}-[a-zA-Z]+-[A-Z]{2}-[A-Z]{3}$/;
-    if(this.value && !regex.test(this.value)) {
-        alert('Please follow the correct format: AA-000000-text-AA-AAA\nExample: SI-250101-Example-PH-WSD');
-        this.style.borderColor = '#e74c3c';
-    } else if(this.value) {
-        this.style.borderColor = '#4caf50';
-    }
-});
         });
+
+        // Channel section toggle functions
+        function toggleChannelSection(channelType, element) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            const section = document.getElementById(channelType + '-section');
+            
+            if (checkbox.checked) {
+                section.style.display = 'block';
+            } else {
+                section.style.display = 'none';
+            }
+            
+            // Update budget breakdown and total calculation
+            updateBudgetBreakdown();
+        }
+
+        // Social media budget field toggle
+        function toggleBudgetField(platform, element) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            const budgetField = document.getElementById(platform + '-budget');
+            
+            if (checkbox.checked) {
+                budgetField.style.display = 'block';
+            } else {
+                budgetField.style.display = 'none';
+            }
+        }
+
+        // Update total contacts for database
+        function updateTotalContacts() {
+            const active = parseInt(document.getElementById('activeQuantity').value) || 0;
+            const dormant = parseInt(document.getElementById('dormantQuantity').value) || 0;
+            const newCurated = parseInt(document.getElementById('newCuratedQuantity').value) || 0;
+            
+            document.getElementById('totalContacts').value = active + dormant + newCurated;
+        }
+
+        // Earmark contacts action
+        function earmarkContacts() {
+            const total = document.getElementById('totalContacts').value;
+            if (total > 0) {
+                alert('Earmarking ' + total + ' contacts for this campaign.');
+            } else {
+                alert('Please specify contact quantities first.');
+            }
+        }
+
+        // Update budget breakdown based on selected channels
+        function updateBudgetBreakdown() {
+            const breakdownContainer = document.getElementById('budget-breakdown');
+            const selectedChannels = [];
+            
+            // Check which channels are selected
+            const channelCheckboxes = document.querySelectorAll('input[name="channel"]');
+            channelCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedChannels.push(checkbox.value);
+                }
+            });
+            
+            // Store existing values before any changes
+            const existingValues = {};
+            const existingFields = breakdownContainer.querySelectorAll('input[id^="budget"]');
+            existingFields.forEach(field => {
+                if (field.value) {
+                    existingValues[field.id] = field.value;
+                }
+            });
+            
+            if (selectedChannels.length === 0) {
+                breakdownContainer.innerHTML = '<div class="help-text">Select channels in the previous section to see budget breakdown fields</div>';
+                updateTotalBudget();
+                return;
+            }
+            
+            // Get currently displayed channels
+            const currentFields = Array.from(breakdownContainer.querySelectorAll('input[id^="budget"]')).map(field => 
+                field.id.replace('budget', '')
+            );
+            
+            // Add new channels that aren't already displayed
+            selectedChannels.forEach(channel => {
+                const fieldId = `budget${channel}`;
+                if (!document.getElementById(fieldId)) {
+                    const fieldDiv = document.createElement('div');
+                    fieldDiv.className = 'form-group';
+                    fieldDiv.setAttribute('data-channel', channel);
+                    
+                    // Check if it's DIGITAL channel to make it readonly
+                    const isDigital = channel === 'DIGITAL';
+                    const readonlyAttr = isDigital ? 'readonly' : '';
+                    const placeholderText = isDigital ? 'Auto-calculated from platforms' : `Enter ${channel.toLowerCase()} budget`;
+                    const bgStyle = isDigital ? 'background-color: #f5f5f5; font-weight: bold;' : '';
+                    
+                    fieldDiv.innerHTML = `
+                        <label for="${fieldId}">${channel} Budget ${isDigital ? '(Auto-calculated)' : ''}</label>
+                        <div class="input-with-symbol">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="${fieldId}" name="${fieldId}" class="budget-breakdown-field" 
+                                   placeholder="${placeholderText}" min="0" step="0.01" ${readonlyAttr} 
+                                   style="${bgStyle}" onchange="updateTotalBudget()">
+                        </div>
+                    `;
+                    breakdownContainer.appendChild(fieldDiv);
+                    
+                    // Restore value if it existed before
+                    if (existingValues[fieldId]) {
+                        document.getElementById(fieldId).value = existingValues[fieldId];
+                    }
+                }
+            });
+            
+            // Remove channels that are no longer selected
+            currentFields.forEach(channel => {
+                if (!selectedChannels.includes(channel)) {
+                    const fieldToRemove = breakdownContainer.querySelector(`[data-channel="${channel}"]`);
+                    if (fieldToRemove) {
+                        fieldToRemove.remove();
+                    }
+                }
+            });
+            
+            // If DIGITAL channel exists, update its value from platforms
+            if (selectedChannels.includes('DIGITAL')) {
+                updateDigitalBudget();
+            }
+            
+            updateTotalBudget();
+        }
+        
+        // Calculate and update total budget from channel breakdown
+        function updateTotalBudget() {
+            const budgetFields = document.querySelectorAll('.budget-breakdown-field');
+            let total = 0;
+            
+            budgetFields.forEach(field => {
+                const value = parseFloat(field.value) || 0;
+                total += value;
+            });
+            
+            document.getElementById('totalBudget').value = total.toFixed(2);
+        }
+        
+        // Calculate and update Digital channel budget from platform allocations
+        function updateDigitalBudget() {
+            const facebookBudget = parseFloat(document.getElementById('budgetFacebook').value) || 0;
+            const tiktokBudget = parseFloat(document.getElementById('budgetTikTok').value) || 0;
+            const linkedinBudget = parseFloat(document.getElementById('budgetLinkedIn').value) || 0;
+            const youtubeBudget = parseFloat(document.getElementById('budgetYouTube').value) || 0;
+            
+            const digitalTotal = facebookBudget + tiktokBudget + linkedinBudget + youtubeBudget;
+            
+            // Update the Digital budget field in breakdown section if it exists
+            const digitalBudgetField = document.getElementById('budgetDIGITAL');
+            if (digitalBudgetField) {
+                digitalBudgetField.value = digitalTotal.toFixed(2);
+                // Trigger total budget update
+                updateTotalBudget();
+            }
+        }
     </script>
 <script>
     const toggleSidebar = document.getElementById('toggleSidebar');
