@@ -594,6 +594,113 @@
             color: var(--dark);
             font-weight: 500;
         }
+
+        /* Multi-select toggle styles */
+        .multi-select-toggle {
+            position: relative;
+            display: block;
+        }
+
+        .multi-select-button {
+            width: 100%;
+            padding: var(--spacing-md);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            background-color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .multi-select-button:hover {
+            border-color: var(--primary);
+        }
+
+        .multi-select-button.active {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(137, 32, 98, 0.15);
+        }
+
+        .multi-select-arrow {
+            transition: transform 0.3s;
+        }
+
+        .multi-select-arrow.rotated {
+            transform: rotate(180deg);
+        }
+
+        .multi-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: white;
+            border: 2px solid var(--primary);
+            border-top: none;
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .multi-select-dropdown.show {
+            display: block;
+        }
+
+        .multi-select-option {
+            padding: var(--spacing-sm) var(--spacing-md);
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .multi-select-option:hover {
+            background-color: var(--light);
+        }
+
+        .multi-select-option input[type="checkbox"] {
+            margin-right: var(--spacing-sm);
+            width: auto;
+            cursor: pointer;
+        }
+
+        .multi-select-option label {
+            cursor: pointer;
+            margin-bottom: 0;
+            flex: 1;
+        }
+
+        .multi-select-selected {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+            margin-top: var(--spacing-xs);
+        }
+
+        .multi-select-tag {
+            background-color: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .multi-select-tag-remove {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .multi-select-tag-remove:hover {
+            color: #ffcccb;
+        }
         
         @media (max-width: 768px) {
             .database-panels {
@@ -817,19 +924,19 @@
                     <div class="form-grid">
                         <div class="span-12">
                             <div class="form-group required">
-                                <label>Channel Type (Multi-Select)</label>
+                                <label>Channel Type (Single Select)</label>
                                 <div class="checkbox-group">
                                     <label class="checkbox-item" data-channel="digital">
-                                        <input type="checkbox" name="channel" value="DIGITAL" id="channel-digital"> DIGITAL
+                                        <input type="radio" name="channel" value="DIGITAL" id="channel-digital"> DIGITAL
                                     </label>
                                     <label class="checkbox-item" data-channel="database">
-                                        <input type="checkbox" name="channel" value="DATABASE" id="channel-database"> DATABASE
+                                        <input type="radio" name="channel" value="DATABASE" id="channel-database"> DATABASE
                                     </label>
                                     <label class="checkbox-item" data-channel="offline">
-                                        <input type="checkbox" name="channel" value="OFFLINE" id="channel-offline"> OFFLINE
+                                        <input type="radio" name="channel" value="OFFLINE" id="channel-offline"> OFFLINE
                                     </label>
                                     <label class="checkbox-item" data-channel="alliances">
-                                        <input type="checkbox" name="channel" value="ALLIANCES" id="channel-alliances"> ALLIANCES
+                                        <input type="radio" name="channel" value="ALLIANCES" id="channel-alliances"> ALLIANCES
                                     </label>
                                 </div>
                             </div>
@@ -844,50 +951,20 @@
                                     <label>Social Media Platforms</label>
                                     <div class="checkbox-group">
                                         <label class="checkbox-item" data-platform="facebook">
-                                            <input type="checkbox" name="socialMedia" value="Facebook" id="social-facebook"> Facebook
+                                            <input type="radio" name="socialMedia" value="Facebook" id="social-facebook"> Facebook
                                         </label>
                                         <label class="checkbox-item" data-platform="tiktok">
-                                            <input type="checkbox" name="socialMedia" value="TikTok" id="social-tiktok"> TikTok
+                                            <input type="radio" name="socialMedia" value="TikTok" id="social-tiktok"> TikTok
                                         </label>
                                         <label class="checkbox-item" data-platform="linkedin">
-                                            <input type="checkbox" name="socialMedia" value="LinkedIn" id="social-linkedin"> LinkedIn
+                                            <input type="radio" name="socialMedia" value="LinkedIn" id="social-linkedin"> LinkedIn
                                         </label>
                                         <label class="checkbox-item" data-platform="youtube">
-                                            <input type="checkbox" name="socialMedia" value="YouTube" id="social-youtube"> YouTube
+                                            <input type="radio" name="socialMedia" value="YouTube" id="social-youtube"> YouTube
                                         </label>
                                     </div>
                                 </div>
 
-                                <div id="budget-fields">
-                                    <div class="form-group" id="facebook-budget" style="display: none;">
-                                        <label for="budgetFacebook">Facebook Budget Allocation</label>
-                                        <div class="input-with-symbol">
-                                            <span class="currency-symbol">$</span>
-                                            <input type="number" id="budgetFacebook" name="budgetFacebook" placeholder="Enter budget" min="0" step="0.01" onchange="updateDigitalBudget()">
-                                        </div>
-                                    </div>
-                                    <div class="form-group" id="tiktok-budget" style="display: none;">
-                                        <label for="budgetTikTok">TikTok Budget Allocation</label>
-                                        <div class="input-with-symbol">
-                                            <span class="currency-symbol">$</span>
-                                            <input type="number" id="budgetTikTok" name="budgetTikTok" placeholder="Enter budget" min="0" step="0.01" onchange="updateDigitalBudget()">
-                                        </div>
-                                    </div>
-                                    <div class="form-group" id="linkedin-budget" style="display: none;">
-                                        <label for="budgetLinkedIn">LinkedIn Budget Allocation</label>
-                                        <div class="input-with-symbol">
-                                            <span class="currency-symbol">$</span>
-                                            <input type="number" id="budgetLinkedIn" name="budgetLinkedIn" placeholder="Enter budget" min="0" step="0.01" onchange="updateDigitalBudget()">
-                                        </div>
-                                    </div>
-                                    <div class="form-group" id="youtube-budget" style="display: none;">
-                                        <label for="budgetYouTube">YouTube Budget Allocation</label>
-                                        <div class="input-with-symbol">
-                                            <span class="currency-symbol">$</span>
-                                            <input type="number" id="budgetYouTube" name="budgetYouTube" placeholder="Enter budget" min="0" step="0.01" onchange="updateDigitalBudget()">
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -905,43 +982,96 @@
                                             <input type="number" id="activeQuantity" name="activeQuantity" placeholder="Enter quantity" min="0" onchange="updateTotalContacts()">
                                         </div>
                                         <div class="form-group">
-                                            <label for="activeCountry">Country</label>
-                                            <select id="activeCountry" name="activeCountry">
-                                                <option value="">Select Country</option>
-                                                <option value="MY">Malaysia</option>
-                                                <option value="SG">Singapore</option>
-                                                <option value="ID">Indonesia</option>
-                                                <option value="PH">Philippines</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
                                             <label for="activeIndustry">Industry</label>
-                                            <select id="activeIndustry" name="activeIndustry">
-                                                <option value="">Select Industry</option>
-                                                <option value="ICT">ICT</option>
-                                                <option value="HR">HR</option>
-                                                <option value="Finance">Finance</option>
-                                                <option value="Healthcare">Healthcare</option>
-                                                <option value="Education">Education</option>
-                                                <option value="Manufacturing">Manufacturing</option>
-                                                <option value="Retail">Retail</option>
-                                                <option value="Government">Government</option>
-                                            </select>
+                                            <div class="multi-select-toggle" id="activeIndustryToggle">
+                                                <div class="multi-select-button" onclick="toggleMultiSelect('activeIndustry')">
+                                                    <span id="activeIndustryText">Select Industries</span>
+                                                    <span class="multi-select-arrow" id="activeIndustryArrow">▼</span>
+                                                </div>
+                                                <div class="multi-select-dropdown" id="activeIndustryDropdown">
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeIndustry_ICT" value="ICT" onchange="updateMultiSelectDisplay('activeIndustry')">
+                                                        <label for="activeIndustry_ICT">ICT</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeIndustry_HR" value="HR" onchange="updateMultiSelectDisplay('activeIndustry')">
+                                                        <label for="activeIndustry_HR">HR</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeIndustry_Finance" value="Finance" onchange="updateMultiSelectDisplay('activeIndustry')">
+                                                        <label for="activeIndustry_Finance">Finance</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeIndustry_Healthcare" value="Healthcare" onchange="updateMultiSelectDisplay('activeIndustry')">
+                                                        <label for="activeIndustry_Healthcare">Healthcare</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeIndustry_Education" value="Education" onchange="updateMultiSelectDisplay('activeIndustry')">
+                                                        <label for="activeIndustry_Education">Education</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeIndustry_Manufacturing" value="Manufacturing" onchange="updateMultiSelectDisplay('activeIndustry')">
+                                                        <label for="activeIndustry_Manufacturing">Manufacturing</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeIndustry_Retail" value="Retail" onchange="updateMultiSelectDisplay('activeIndustry')">
+                                                        <label for="activeIndustry_Retail">Retail</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeIndustry_Government" value="Government" onchange="updateMultiSelectDisplay('activeIndustry')">
+                                                        <label for="activeIndustry_Government">Government</label>
+                                                    </div>
+                                                </div>
+                                                <div class="multi-select-selected" id="activeIndustrySelected"></div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="activeJobTitle">Job Title</label>
-                                            <select id="activeJobTitle" name="activeJobTitle">
-                                                <option value="">Select Job Title</option>
-                                                <option value="CEO">CEO</option>
-                                                <option value="CTO">CTO</option>
-                                                <option value="CFO">CFO</option>
-                                                <option value="Manager">Manager</option>
-                                                <option value="Director">Director</option>
-                                                <option value="VP">VP</option>
-                                                <option value="Senior Manager">Senior Manager</option>
-                                                <option value="Team Lead">Team Lead</option>
-                                                <option value="Specialist">Specialist</option>
-                                            </select>
+                                            <div class="multi-select-toggle" id="activeJobTitleToggle">
+                                                <div class="multi-select-button" onclick="toggleMultiSelect('activeJobTitle')">
+                                                    <span id="activeJobTitleText">Select Job Titles</span>
+                                                    <span class="multi-select-arrow" id="activeJobTitleArrow">▼</span>
+                                                </div>
+                                                <div class="multi-select-dropdown" id="activeJobTitleDropdown">
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeJobTitle_CEO" value="CEO" onchange="updateMultiSelectDisplay('activeJobTitle')">
+                                                        <label for="activeJobTitle_CEO">CEO</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeJobTitle_CTO" value="CTO" onchange="updateMultiSelectDisplay('activeJobTitle')">
+                                                        <label for="activeJobTitle_CTO">CTO</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeJobTitle_CFO" value="CFO" onchange="updateMultiSelectDisplay('activeJobTitle')">
+                                                        <label for="activeJobTitle_CFO">CFO</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeJobTitle_Manager" value="Manager" onchange="updateMultiSelectDisplay('activeJobTitle')">
+                                                        <label for="activeJobTitle_Manager">Manager</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeJobTitle_Director" value="Director" onchange="updateMultiSelectDisplay('activeJobTitle')">
+                                                        <label for="activeJobTitle_Director">Director</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeJobTitle_VP" value="VP" onchange="updateMultiSelectDisplay('activeJobTitle')">
+                                                        <label for="activeJobTitle_VP">VP</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeJobTitle_Senior_Manager" value="Senior Manager" onchange="updateMultiSelectDisplay('activeJobTitle')">
+                                                        <label for="activeJobTitle_Senior_Manager">Senior Manager</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeJobTitle_Team_Lead" value="Team Lead" onchange="updateMultiSelectDisplay('activeJobTitle')">
+                                                        <label for="activeJobTitle_Team_Lead">Team Lead</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="activeJobTitle_Specialist" value="Specialist" onchange="updateMultiSelectDisplay('activeJobTitle')">
+                                                        <label for="activeJobTitle_Specialist">Specialist</label>
+                                                    </div>
+                                                </div>
+                                                <div class="multi-select-selected" id="activeJobTitleSelected"></div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -953,43 +1083,96 @@
                                             <input type="number" id="dormantQuantity" name="dormantQuantity" placeholder="Enter quantity" min="0" onchange="updateTotalContacts()">
                                         </div>
                                         <div class="form-group">
-                                            <label for="dormantCountry">Country</label>
-                                            <select id="dormantCountry" name="dormantCountry">
-                                                <option value="">Select Country</option>
-                                                <option value="MY">Malaysia</option>
-                                                <option value="SG">Singapore</option>
-                                                <option value="ID">Indonesia</option>
-                                                <option value="PH">Philippines</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
                                             <label for="dormantIndustry">Industry</label>
-                                            <select id="dormantIndustry" name="dormantIndustry">
-                                                <option value="">Select Industry</option>
-                                                <option value="ICT">ICT</option>
-                                                <option value="HR">HR</option>
-                                                <option value="Finance">Finance</option>
-                                                <option value="Healthcare">Healthcare</option>
-                                                <option value="Education">Education</option>
-                                                <option value="Manufacturing">Manufacturing</option>
-                                                <option value="Retail">Retail</option>
-                                                <option value="Government">Government</option>
-                                            </select>
+                                            <div class="multi-select-toggle" id="dormantIndustryToggle">
+                                                <div class="multi-select-button" onclick="toggleMultiSelect('dormantIndustry')">
+                                                    <span id="dormantIndustryText">Select Industries</span>
+                                                    <span class="multi-select-arrow" id="dormantIndustryArrow">▼</span>
+                                                </div>
+                                                <div class="multi-select-dropdown" id="dormantIndustryDropdown">
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantIndustry_ICT" value="ICT" onchange="updateMultiSelectDisplay('dormantIndustry')">
+                                                        <label for="dormantIndustry_ICT">ICT</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantIndustry_HR" value="HR" onchange="updateMultiSelectDisplay('dormantIndustry')">
+                                                        <label for="dormantIndustry_HR">HR</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantIndustry_Finance" value="Finance" onchange="updateMultiSelectDisplay('dormantIndustry')">
+                                                        <label for="dormantIndustry_Finance">Finance</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantIndustry_Healthcare" value="Healthcare" onchange="updateMultiSelectDisplay('dormantIndustry')">
+                                                        <label for="dormantIndustry_Healthcare">Healthcare</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantIndustry_Education" value="Education" onchange="updateMultiSelectDisplay('dormantIndustry')">
+                                                        <label for="dormantIndustry_Education">Education</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantIndustry_Manufacturing" value="Manufacturing" onchange="updateMultiSelectDisplay('dormantIndustry')">
+                                                        <label for="dormantIndustry_Manufacturing">Manufacturing</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantIndustry_Retail" value="Retail" onchange="updateMultiSelectDisplay('dormantIndustry')">
+                                                        <label for="dormantIndustry_Retail">Retail</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantIndustry_Government" value="Government" onchange="updateMultiSelectDisplay('dormantIndustry')">
+                                                        <label for="dormantIndustry_Government">Government</label>
+                                                    </div>
+                                                </div>
+                                                <div class="multi-select-selected" id="dormantIndustrySelected"></div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="dormantJobTitle">Job Title</label>
-                                            <select id="dormantJobTitle" name="dormantJobTitle">
-                                                <option value="">Select Job Title</option>
-                                                <option value="CEO">CEO</option>
-                                                <option value="CTO">CTO</option>
-                                                <option value="CFO">CFO</option>
-                                                <option value="Manager">Manager</option>
-                                                <option value="Director">Director</option>
-                                                <option value="VP">VP</option>
-                                                <option value="Senior Manager">Senior Manager</option>
-                                                <option value="Team Lead">Team Lead</option>
-                                                <option value="Specialist">Specialist</option>
-                                            </select>
+                                            <div class="multi-select-toggle" id="dormantJobTitleToggle">
+                                                <div class="multi-select-button" onclick="toggleMultiSelect('dormantJobTitle')">
+                                                    <span id="dormantJobTitleText">Select Job Titles</span>
+                                                    <span class="multi-select-arrow" id="dormantJobTitleArrow">▼</span>
+                                                </div>
+                                                <div class="multi-select-dropdown" id="dormantJobTitleDropdown">
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantJobTitle_CEO" value="CEO" onchange="updateMultiSelectDisplay('dormantJobTitle')">
+                                                        <label for="dormantJobTitle_CEO">CEO</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantJobTitle_CTO" value="CTO" onchange="updateMultiSelectDisplay('dormantJobTitle')">
+                                                        <label for="dormantJobTitle_CTO">CTO</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantJobTitle_CFO" value="CFO" onchange="updateMultiSelectDisplay('dormantJobTitle')">
+                                                        <label for="dormantJobTitle_CFO">CFO</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantJobTitle_Manager" value="Manager" onchange="updateMultiSelectDisplay('dormantJobTitle')">
+                                                        <label for="dormantJobTitle_Manager">Manager</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantJobTitle_Director" value="Director" onchange="updateMultiSelectDisplay('dormantJobTitle')">
+                                                        <label for="dormantJobTitle_Director">Director</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantJobTitle_VP" value="VP" onchange="updateMultiSelectDisplay('dormantJobTitle')">
+                                                        <label for="dormantJobTitle_VP">VP</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantJobTitle_Senior_Manager" value="Senior Manager" onchange="updateMultiSelectDisplay('dormantJobTitle')">
+                                                        <label for="dormantJobTitle_Senior_Manager">Senior Manager</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantJobTitle_Team_Lead" value="Team Lead" onchange="updateMultiSelectDisplay('dormantJobTitle')">
+                                                        <label for="dormantJobTitle_Team_Lead">Team Lead</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="dormantJobTitle_Specialist" value="Specialist" onchange="updateMultiSelectDisplay('dormantJobTitle')">
+                                                        <label for="dormantJobTitle_Specialist">Specialist</label>
+                                                    </div>
+                                                </div>
+                                                <div class="multi-select-selected" id="dormantJobTitleSelected"></div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -1001,43 +1184,96 @@
                                             <input type="number" id="newCuratedQuantity" name="newCuratedQuantity" placeholder="Enter quantity" min="0" onchange="updateTotalContacts()">
                                         </div>
                                         <div class="form-group">
-                                            <label for="newCuratedCountry">Country</label>
-                                            <select id="newCuratedCountry" name="newCuratedCountry">
-                                                <option value="">Select Country</option>
-                                                <option value="MY">Malaysia</option>
-                                                <option value="SG">Singapore</option>
-                                                <option value="ID">Indonesia</option>
-                                                <option value="PH">Philippines</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
                                             <label for="newCuratedIndustry">Industry</label>
-                                            <select id="newCuratedIndustry" name="newCuratedIndustry">
-                                                <option value="">Select Industry</option>
-                                                <option value="ICT">ICT</option>
-                                                <option value="HR">HR</option>
-                                                <option value="Finance">Finance</option>
-                                                <option value="Healthcare">Healthcare</option>
-                                                <option value="Education">Education</option>
-                                                <option value="Manufacturing">Manufacturing</option>
-                                                <option value="Retail">Retail</option>
-                                                <option value="Government">Government</option>
-                                            </select>
+                                            <div class="multi-select-toggle" id="newCuratedIndustryToggle">
+                                                <div class="multi-select-button" onclick="toggleMultiSelect('newCuratedIndustry')">
+                                                    <span id="newCuratedIndustryText">Select Industries</span>
+                                                    <span class="multi-select-arrow" id="newCuratedIndustryArrow">▼</span>
+                                                </div>
+                                                <div class="multi-select-dropdown" id="newCuratedIndustryDropdown">
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedIndustry_ICT" value="ICT" onchange="updateMultiSelectDisplay('newCuratedIndustry')">
+                                                        <label for="newCuratedIndustry_ICT">ICT</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedIndustry_HR" value="HR" onchange="updateMultiSelectDisplay('newCuratedIndustry')">
+                                                        <label for="newCuratedIndustry_HR">HR</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedIndustry_Finance" value="Finance" onchange="updateMultiSelectDisplay('newCuratedIndustry')">
+                                                        <label for="newCuratedIndustry_Finance">Finance</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedIndustry_Healthcare" value="Healthcare" onchange="updateMultiSelectDisplay('newCuratedIndustry')">
+                                                        <label for="newCuratedIndustry_Healthcare">Healthcare</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedIndustry_Education" value="Education" onchange="updateMultiSelectDisplay('newCuratedIndustry')">
+                                                        <label for="newCuratedIndustry_Education">Education</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedIndustry_Manufacturing" value="Manufacturing" onchange="updateMultiSelectDisplay('newCuratedIndustry')">
+                                                        <label for="newCuratedIndustry_Manufacturing">Manufacturing</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedIndustry_Retail" value="Retail" onchange="updateMultiSelectDisplay('newCuratedIndustry')">
+                                                        <label for="newCuratedIndustry_Retail">Retail</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedIndustry_Government" value="Government" onchange="updateMultiSelectDisplay('newCuratedIndustry')">
+                                                        <label for="newCuratedIndustry_Government">Government</label>
+                                                    </div>
+                                                </div>
+                                                <div class="multi-select-selected" id="newCuratedIndustrySelected"></div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="newCuratedJobTitle">Job Title</label>
-                                            <select id="newCuratedJobTitle" name="newCuratedJobTitle">
-                                                <option value="">Select Job Title</option>
-                                                <option value="CEO">CEO</option>
-                                                <option value="CTO">CTO</option>
-                                                <option value="CFO">CFO</option>
-                                                <option value="Manager">Manager</option>
-                                                <option value="Director">Director</option>
-                                                <option value="VP">VP</option>
-                                                <option value="Senior Manager">Senior Manager</option>
-                                                <option value="Team Lead">Team Lead</option>
-                                                <option value="Specialist">Specialist</option>
-                                            </select>
+                                            <div class="multi-select-toggle" id="newCuratedJobTitleToggle">
+                                                <div class="multi-select-button" onclick="toggleMultiSelect('newCuratedJobTitle')">
+                                                    <span id="newCuratedJobTitleText">Select Job Titles</span>
+                                                    <span class="multi-select-arrow" id="newCuratedJobTitleArrow">▼</span>
+                                                </div>
+                                                <div class="multi-select-dropdown" id="newCuratedJobTitleDropdown">
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedJobTitle_CEO" value="CEO" onchange="updateMultiSelectDisplay('newCuratedJobTitle')">
+                                                        <label for="newCuratedJobTitle_CEO">CEO</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedJobTitle_CTO" value="CTO" onchange="updateMultiSelectDisplay('newCuratedJobTitle')">
+                                                        <label for="newCuratedJobTitle_CTO">CTO</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedJobTitle_CFO" value="CFO" onchange="updateMultiSelectDisplay('newCuratedJobTitle')">
+                                                        <label for="newCuratedJobTitle_CFO">CFO</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedJobTitle_Manager" value="Manager" onchange="updateMultiSelectDisplay('newCuratedJobTitle')">
+                                                        <label for="newCuratedJobTitle_Manager">Manager</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedJobTitle_Director" value="Director" onchange="updateMultiSelectDisplay('newCuratedJobTitle')">
+                                                        <label for="newCuratedJobTitle_Director">Director</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedJobTitle_VP" value="VP" onchange="updateMultiSelectDisplay('newCuratedJobTitle')">
+                                                        <label for="newCuratedJobTitle_VP">VP</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedJobTitle_Senior_Manager" value="Senior Manager" onchange="updateMultiSelectDisplay('newCuratedJobTitle')">
+                                                        <label for="newCuratedJobTitle_Senior_Manager">Senior Manager</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedJobTitle_Team_Lead" value="Team Lead" onchange="updateMultiSelectDisplay('newCuratedJobTitle')">
+                                                        <label for="newCuratedJobTitle_Team_Lead">Team Lead</label>
+                                                    </div>
+                                                    <div class="multi-select-option">
+                                                        <input type="checkbox" id="newCuratedJobTitle_Specialist" value="Specialist" onchange="updateMultiSelectDisplay('newCuratedJobTitle')">
+                                                        <label for="newCuratedJobTitle_Specialist">Specialist</label>
+                                                    </div>
+                                                </div>
+                                                <div class="multi-select-selected" id="newCuratedJobTitleSelected"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1111,19 +1347,11 @@
                     <div class="form-grid">
                         <div class="span-12">
                             <div class="form-group">
-                                <label for="totalBudget">Total Budget (Auto-calculated)</label>
+                                <label for="totalBudget">Total Budget</label>
                                 <div class="input-with-symbol">
                                     <span class="currency-symbol">$</span>
-                                    <input type="number" id="totalBudget" name="totalBudget" readonly placeholder="Calculated from channel breakdown" min="0" step="0.01" style="background-color: #f5f5f5; font-weight: bold;">
+                                    <input type="number" id="totalBudget" name="totalBudget" placeholder="Enter total budget" min="0" step="0.01" required>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="span-12">
-                            <h4 style="color: var(--primary-dark); margin-bottom: 15px;">Breakdown by Channel</h4>
-                            <div id="budget-breakdown">
-                                <!-- Budget breakdown fields will be populated dynamically based on selected channels -->
-                                <div class="help-text">Select channels in the previous section to see budget breakdown fields</div>
                             </div>
                         </div>
                     </div>
@@ -1219,25 +1447,34 @@
         document.addEventListener('DOMContentLoaded', function() {
             
             
-            // Channel checkbox styling and functionality
+            // Channel radio button styling and functionality
             const checkboxItems = document.querySelectorAll('.checkbox-item');
             checkboxItems.forEach(item => {
                 item.addEventListener('click', function(e) {
-                    const checkbox = this.querySelector('input[type="checkbox"]');
+                    const radio = this.querySelector('input[type="radio"]');
                     
-                    // Let browser handle checkbox toggle, then update UI
+                    // Let browser handle radio button selection, then update UI
                     setTimeout(() => {
-                        // Update the selected class for this item
-                        this.classList.toggle('selected', checkbox.checked);
+                        // Remove selected class from all channel items
+                        if (this.dataset.channel) {
+                            document.querySelectorAll('.checkbox-item[data-channel]').forEach(channelItem => {
+                                channelItem.classList.remove('selected');
+                            });
+                        }
+                        
+                        // Remove selected class from all platform items (social media)
+                        if (this.dataset.platform) {
+                            document.querySelectorAll('.checkbox-item[data-platform]').forEach(platformItem => {
+                                platformItem.classList.remove('selected');
+                            });
+                        }
+                        
+                        // Add selected class to this item if radio is checked
+                        this.classList.toggle('selected', radio.checked);
                         
                         // Handle channel section toggling
                         if (this.dataset.channel) {
                             toggleChannelSection(this.dataset.channel, this);
-                        }
-                        
-                        // Handle platform budget field toggling
-                        if (this.dataset.platform) {
-                            toggleBudgetField(this.dataset.platform, this);
                         }
                     }, 0);
                 });
@@ -1280,30 +1517,20 @@
 
         // Channel section toggle functions
         function toggleChannelSection(channelType, element) {
-            const checkbox = element.querySelector('input[type="checkbox"]');
-            const section = document.getElementById(channelType + '-section');
+            const radio = element.querySelector('input[type="radio"]');
             
-            if (checkbox.checked) {
-                section.style.display = 'block';
-            } else {
+            // Hide all channel sections first
+            document.querySelectorAll('[id$="-section"]').forEach(section => {
                 section.style.display = 'none';
-            }
+            });
             
-            // Update budget breakdown and total calculation
-            updateBudgetBreakdown();
+            // Show only the selected channel section
+            if (radio.checked) {
+                const section = document.getElementById(channelType + '-section');
+                section.style.display = 'block';
+            }
         }
 
-        // Social media budget field toggle
-        function toggleBudgetField(platform, element) {
-            const checkbox = element.querySelector('input[type="checkbox"]');
-            const budgetField = document.getElementById(platform + '-budget');
-            
-            if (checkbox.checked) {
-                budgetField.style.display = 'block';
-            } else {
-                budgetField.style.display = 'none';
-            }
-        }
 
         // Update total contacts for database
         function updateTotalContacts() {
@@ -1324,119 +1551,115 @@
             }
         }
 
-        // Update budget breakdown based on selected channels
-        function updateBudgetBreakdown() {
-            const breakdownContainer = document.getElementById('budget-breakdown');
-            const selectedChannels = [];
+        // Multi-select toggle functions
+        function toggleMultiSelect(fieldName) {
+            const dropdown = document.getElementById(fieldName + 'Dropdown');
+            const button = dropdown.previousElementSibling;
+            const arrow = document.getElementById(fieldName + 'Arrow');
             
-            // Check which channels are selected
-            const channelCheckboxes = document.querySelectorAll('input[name="channel"]');
-            channelCheckboxes.forEach(checkbox => {
+            const isVisible = dropdown.classList.contains('show');
+            
+            // Hide all other open dropdowns
+            document.querySelectorAll('.multi-select-dropdown.show').forEach(openDropdown => {
+                if (openDropdown !== dropdown) {
+                    openDropdown.classList.remove('show');
+                    const otherButton = openDropdown.previousElementSibling;
+                    const otherArrow = otherButton.querySelector('.multi-select-arrow');
+                    otherButton.classList.remove('active');
+                    otherArrow.classList.remove('rotated');
+                }
+            });
+            
+            // Toggle current dropdown
+            if (isVisible) {
+                dropdown.classList.remove('show');
+                button.classList.remove('active');
+                arrow.classList.remove('rotated');
+            } else {
+                dropdown.classList.add('show');
+                button.classList.add('active');
+                arrow.classList.add('rotated');
+            }
+        }
+        
+        function updateMultiSelectDisplay(fieldName) {
+            const checkboxes = document.querySelectorAll(`input[id^="${fieldName}_"]`);
+            const textElement = document.getElementById(fieldName + 'Text');
+            const selectedContainer = document.getElementById(fieldName + 'Selected');
+            
+            const selectedValues = [];
+            checkboxes.forEach(checkbox => {
                 if (checkbox.checked) {
-                    selectedChannels.push(checkbox.value);
+                    selectedValues.push(checkbox.value);
                 }
             });
             
-            // Store existing values before any changes
-            const existingValues = {};
-            const existingFields = breakdownContainer.querySelectorAll('input[id^="budget"]');
-            existingFields.forEach(field => {
-                if (field.value) {
-                    existingValues[field.id] = field.value;
-                }
-            });
-            
-            if (selectedChannels.length === 0) {
-                breakdownContainer.innerHTML = '<div class="help-text">Select channels in the previous section to see budget breakdown fields</div>';
-                updateTotalBudget();
-                return;
+            // Update button text
+            if (selectedValues.length === 0) {
+                textElement.textContent = fieldName.includes('Industry') ? 'Select Industries' : 'Select Job Titles';
+            } else {
+                textElement.textContent = `${selectedValues.length} selected`;
             }
             
-            // Get currently displayed channels
-            const currentFields = Array.from(breakdownContainer.querySelectorAll('input[id^="budget"]')).map(field => 
-                field.id.replace('budget', '')
-            );
-            
-            // Add new channels that aren't already displayed
-            selectedChannels.forEach(channel => {
-                const fieldId = `budget${channel}`;
-                if (!document.getElementById(fieldId)) {
-                    const fieldDiv = document.createElement('div');
-                    fieldDiv.className = 'form-group';
-                    fieldDiv.setAttribute('data-channel', channel);
-                    
-                    // Check if it's DIGITAL channel to make it readonly
-                    const isDigital = channel === 'DIGITAL';
-                    const readonlyAttr = isDigital ? 'readonly' : '';
-                    const placeholderText = isDigital ? 'Auto-calculated from platforms' : `Enter ${channel.toLowerCase()} budget`;
-                    const bgStyle = isDigital ? 'background-color: #f5f5f5; font-weight: bold;' : '';
-                    
-                    fieldDiv.innerHTML = `
-                        <label for="${fieldId}">${channel} Budget ${isDigital ? '(Auto-calculated)' : ''}</label>
-                        <div class="input-with-symbol">
-                            <span class="currency-symbol">$</span>
-                            <input type="number" id="${fieldId}" name="${fieldId}" class="budget-breakdown-field" 
-                                   placeholder="${placeholderText}" min="0" step="0.01" ${readonlyAttr} 
-                                   style="${bgStyle}" onchange="updateTotalBudget()">
-                        </div>
-                    `;
-                    breakdownContainer.appendChild(fieldDiv);
-                    
-                    // Restore value if it existed before
-                    if (existingValues[fieldId]) {
-                        document.getElementById(fieldId).value = existingValues[fieldId];
-                    }
-                }
+            // Update selected tags
+            selectedContainer.innerHTML = '';
+            selectedValues.forEach(value => {
+                const tag = document.createElement('span');
+                tag.className = 'multi-select-tag';
+                tag.innerHTML = `
+                    ${value}
+                    <span class="multi-select-tag-remove" onclick="removeMultiSelectTag('${fieldName}', '${value}')">×</span>
+                `;
+                selectedContainer.appendChild(tag);
             });
-            
-            // Remove channels that are no longer selected
-            currentFields.forEach(channel => {
-                if (!selectedChannels.includes(channel)) {
-                    const fieldToRemove = breakdownContainer.querySelector(`[data-channel="${channel}"]`);
-                    if (fieldToRemove) {
-                        fieldToRemove.remove();
-                    }
-                }
-            });
-            
-            // If DIGITAL channel exists, update its value from platforms
-            if (selectedChannels.includes('DIGITAL')) {
-                updateDigitalBudget();
-            }
-            
-            updateTotalBudget();
         }
         
-        // Calculate and update total budget from channel breakdown
-        function updateTotalBudget() {
-            const budgetFields = document.querySelectorAll('.budget-breakdown-field');
-            let total = 0;
-            
-            budgetFields.forEach(field => {
-                const value = parseFloat(field.value) || 0;
-                total += value;
+        function removeMultiSelectTag(fieldName, value) {
+            const checkboxes = document.querySelectorAll(`input[id^="${fieldName}_"]`);
+            checkboxes.forEach(checkbox => {
+                if (checkbox.value === value) {
+                    checkbox.checked = false;
+                }
             });
-            
-            document.getElementById('totalBudget').value = total.toFixed(2);
+            updateMultiSelectDisplay(fieldName);
         }
         
-        // Calculate and update Digital channel budget from platform allocations
-        function updateDigitalBudget() {
-            const facebookBudget = parseFloat(document.getElementById('budgetFacebook').value) || 0;
-            const tiktokBudget = parseFloat(document.getElementById('budgetTikTok').value) || 0;
-            const linkedinBudget = parseFloat(document.getElementById('budgetLinkedIn').value) || 0;
-            const youtubeBudget = parseFloat(document.getElementById('budgetYouTube').value) || 0;
-            
-            const digitalTotal = facebookBudget + tiktokBudget + linkedinBudget + youtubeBudget;
-            
-            // Update the Digital budget field in breakdown section if it exists
-            const digitalBudgetField = document.getElementById('budgetDIGITAL');
-            if (digitalBudgetField) {
-                digitalBudgetField.value = digitalTotal.toFixed(2);
-                // Trigger total budget update
-                updateTotalBudget();
+        // Handle multi-select option clicks with setTimeout
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.multi-select-option').forEach(option => {
+                option.addEventListener('click', function(e) {
+                    const checkbox = this.querySelector('input[type="checkbox"]');
+                    
+                    // Don't trigger if the click was directly on the checkbox
+                    if (e.target !== checkbox) {
+                        e.preventDefault();
+                        
+                        setTimeout(() => {
+                            checkbox.checked = !checkbox.checked;
+                            
+                            // Trigger the onchange event
+                            const changeEvent = new Event('change', { bubbles: true });
+                            checkbox.dispatchEvent(changeEvent);
+                        }, 0);
+                    }
+                });
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            const isMultiSelectElement = event.target.closest('.multi-select-toggle');
+            if (!isMultiSelectElement) {
+                document.querySelectorAll('.multi-select-dropdown.show').forEach(dropdown => {
+                    dropdown.classList.remove('show');
+                    const button = dropdown.previousElementSibling;
+                    const arrow = button.querySelector('.multi-select-arrow');
+                    button.classList.remove('active');
+                    arrow.classList.remove('rotated');
+                });
             }
-        }
+        });
+        
     </script>
 <script>
     const toggleSidebar = document.getElementById('toggleSidebar');
